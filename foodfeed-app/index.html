@@ -169,7 +169,7 @@
       <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
       <div data-screen-label="Preferences Intro" class="ffscroll" style="position:absolute;inset:0;overflow-y:auto">
         <div style="padding:70px 26px 40px;min-height:100%;display:flex;flex-direction:column">
-          <div style="text-align:center;color:#9A918B;font-size:13px;font-weight:600;letter-spacing:.4px;text-transform:uppercase">Personalize</div>
+          <div style="display:flex;justify-content:center"><span style="display:inline-flex;align-items:center;padding:5px 13px;border-radius:999px;background:#FDECEA;color:#C23325;font-size:11.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;font-family:-apple-system, 'SF Pro Text', system-ui, sans-serif">Personalize</span></div>
           <label style="display:block;width:96px;height:96px;margin:18px auto 2px;position:relative;cursor:pointer"><div style="width:96px;height:96px;border-radius:50%;background:{{ avatarBg }};background-image:{{ avatarImg }};background-size:cover;background-position:center;display:flex;align-items:center;justify-content:center"><span style="font-family:'Poppins';font-weight:700;font-size:38px;color:#fff;opacity:{{ avatarLetterOpacity }}">{{ avatarInitial }}</span></div><div style="position:absolute;right:0;bottom:0;width:30px;height:30px;border-radius:50%;background:#1B1714;border:3px solid #FAF7F5;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"></path></svg></div><input type="file" accept="image/*" onchange="{{ onAvatar }}" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none"></label>
           <h1 style="font-family:'Poppins';font-weight:700;font-size:30px;color:#1B1714;margin:8px 0 0;text-align:center;letter-spacing:-.6px">Hey Jordan 👋</h1>
           <p style="color:#7C736D;font-size:15px;text-align:center;margin:0 auto 26px;line-height:1.5;max-width:300px">Three quick questions to tailor your feed.</p>
@@ -228,6 +228,10 @@
           </div>
         </div>
         <div style="padding:14px 26px 30px;border-top:1px solid #F0EAE6;background:#FAF7F5">
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+            <span style="font-size:13.5px;color:#8A817B;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif">Your preferences are private and secure.</span>
+          </div>
           <button onclick="{{ goAllergies }}" style="width:100%;height:54px;border:none;border-radius:30px;background:#E03E2F;color:#fff;font-size:17px;line-height:1;letter-spacing:.1px;white-space:nowrap;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px">Continue <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
         </div>
       </div>
@@ -276,24 +280,14 @@
               </sc-for>
             </div>
           </sc-if>
-          <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;color:#9A918B;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">Commonly selected</div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-            <sc-for list="{{ allergenCards }}" as="c" hint-placeholder-count="9">
-              <button onclick="{{ c.onToggle }}" style="{{ c.style }}"><span style="{{ c.xStyle }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span><span style="{{ c.emojiStyle }}">{{ c.emoji }}</span><span style="{{ c.labelStyle }}">{{ c.label }}</span></button>
-            </sc-for>
-          </div>
-<div style="height:1px;background:#EDE7E3;margin:22px 0 18px"></div>
-          <button onclick="{{ noneAllergy.onToggle }}" style="{{ noneAllergy.style }}">
-            <span style="{{ noneAllergy.radioStyle }}"><span style="{{ noneAllergy.dotStyle }}"></span></span>
-            <span style="{{ noneAllergy.labelStyle }}">No allergies</span>
-            <span style="margin-left:auto;font-size:19px;line-height:1">✅</span>
-          </button>
-          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px">
+          <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;color:#9A918B;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">For example</div>
+          <div style="font-size:15px;color:#8A817B;line-height:1.6;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Peanuts, Tree nuts, Milk, Eggs, Shellfish…</div>
+        </div>
+        <div style="padding:14px 26px 30px;border-top:1px solid #F0EAE6;background:#FAF7F5">
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
             <span style="font-size:13.5px;color:#8A817B;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif">Your preferences are private and secure.</span>
           </div>
-        </div>
-        <div style="padding:14px 26px 30px;border-top:1px solid #F0EAE6;background:#FAF7F5">
           <button onclick="{{ goDislikes }}" style="width:100%;height:54px;border:none;border-radius:30px;background:#E03E2F;color:#fff;font-size:17px;line-height:1;letter-spacing:.1px;white-space:nowrap;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px">Continue <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
         </div>
       </div>
@@ -342,24 +336,14 @@
               </sc-for>
             </div>
           </sc-if>
-          <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;color:#9A918B;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">Commonly selected</div>
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-            <sc-for list="{{ dislikeCards }}" as="c" hint-placeholder-count="9">
-              <button onclick="{{ c.onToggle }}" style="{{ c.style }}"><span style="{{ c.xStyle }}"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></span><span style="{{ c.emojiStyle }}">{{ c.emoji }}</span><span style="{{ c.labelStyle }}">{{ c.label }}</span></button>
-            </sc-for>
-          </div>
-<div style="height:1px;background:#EDE7E3;margin:22px 0 18px"></div>
-          <button onclick="{{ noneDislike.onToggle }}" style="{{ noneDislike.style }}">
-            <span style="{{ noneDislike.radioStyle }}"><span style="{{ noneDislike.dotStyle }}"></span></span>
-            <span style="{{ noneDislike.labelStyle }}">Nothing to avoid</span>
-            <span style="margin-left:auto;font-size:19px;line-height:1">👌</span>
-          </button>
-          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:20px">
+          <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;color:#9A918B;letter-spacing:.5px;text-transform:uppercase;margin-bottom:10px">For example</div>
+          <div style="font-size:15px;color:#8A817B;line-height:1.6;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Pork, Mushrooms, Olives, Onions, Pickles…</div>
+        </div>
+        <div style="padding:14px 26px 30px;border-top:1px solid #F0EAE6;background:#FAF7F5">
+          <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:12px">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
             <span style="font-size:13.5px;color:#8A817B;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif">Your preferences are private and secure.</span>
           </div>
-        </div>
-        <div style="padding:14px 26px 30px;border-top:1px solid #F0EAE6;background:#FAF7F5">
           <button onclick="{{ goHome }}" style="width:100%;height:54px;border:none;border-radius:30px;background:#E03E2F;color:#fff;font-size:17px;line-height:1;letter-spacing:.1px;white-space:nowrap;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px">Finish &amp; explore <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></button>
         </div>
       </div>
@@ -441,30 +425,25 @@
                 <h2 style="font-family:-apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif;font-weight:700;font-size:19px;color:#1B1714;margin:0;letter-spacing:-.3px">{{ p.title }}</h2>
               </div>
 
-              <div style="display:flex;flex-direction:column;gap:18px">
+              <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px">
                 <sc-if value="{{ p.empty }}" hint-placeholder-val="{{ false }}">
-                <div style="text-align:center;padding:38px 20px 30px">
+                <div style="grid-column:1/-1;text-align:center;padding:38px 20px 30px">
                   <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:16px;color:#1B1714;margin-bottom:6px">No recipes here yet</div>
                   <div style="color:#7C736D;font-size:14px;line-height:1.45">{{ p.emptyNote }}</div>
                 </div>
               </sc-if>
               <sc-for list="{{ p.recipes }}" as="r" hint-placeholder-count="6">
-                  <div onclick="{{ r.onOpen }}" style="cursor:pointer;background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 12px 28px -20px rgba(60,30,20,.5)">
-                    <div style="position:relative;aspect-ratio:16/11;background:#F0EAE6">
+                  <div onclick="{{ r.onOpen }}" style="cursor:pointer;background:#fff;border-radius:18px;overflow:hidden;box-shadow:0 12px 28px -20px rgba(60,30,20,.5)">
+                    <div style="position:relative;aspect-ratio:1/1;background:#F0EAE6">
                       <image-slot id="{{ r.slot }}" src="{{ r.img }}" shape="rect" placeholder="Drop photo" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+                      <button onclick="{{ r.onBookmark }}" style="position:absolute;top:8px;right:8px;width:31px;height:31px;border-radius:50%;border:none;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0"><svg width="15" height="15" viewBox="0 0 47 47" fill="{{ r.heartStroke }}"><path d="M9.3999 9.39995C9.3999 6.80761 11.5076 4.69995 14.0999 4.69995H32.8999C35.4922 4.69995 37.5999 6.80761 37.5999 9.39995V40.0307C37.5999 41.9107 35.5069 43.027 33.9427 41.9842L23.4999 35.0149L13.0571 41.9842C11.4929 43.027 9.3999 41.9034 9.3999 40.0307V9.39995Z" fill="{{ r.heartFill }}"></path><path d="M9.3999 9.39995C9.3999 6.80761 11.5076 4.69995 14.0999 4.69995H32.8999C35.4922 4.69995 37.5999 6.80761 37.5999 9.39995V40.0307C37.5999 41.9107 35.5069 43.027 33.9427 41.9842L23.4999 35.0149L13.0571 41.9842C11.4929 43.027 9.3999 41.9034 9.3999 40.0307V9.39995ZM14.0999 8.22495C13.4537 8.22495 12.9249 8.7537 12.9249 9.39995V37.8349L21.5465 32.0921C22.7288 31.3064 24.271 31.3064 25.4533 32.0921L34.0749 37.8349V9.39995C34.0749 8.7537 33.5462 8.22495 32.8999 8.22495H14.0999Z"></path></svg></button>
                     </div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:14px;padding:14px 16px 16px">
-                      <div style="min-width:0">
-                        <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:16.5px;letter-spacing:-.2px;color:#1B1714;line-height:1.25">{{ r.name }}</div>
-                        <div style="display:flex;align-items:center;gap:7px;margin-top:7px;font-size:13.5px;color:#514A45;font-weight:500;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif">
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="#E03E2F" style="flex:none"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"></path></svg>
-                          <span>{{ r.rating }}</span><span style="color:#D5CCC6">|</span><span>{{ r.timeLabel }}</span><span style="color:#D5CCC6">|</span><span>{{ r.cal }} cal</span>
-                        </div>
+                    <div style="padding:11px 12px 13px">
+                      <div style="font-family:'Poppins',sans-serif;font-weight:700;font-size:14px;letter-spacing:-.2px;color:#1B1714;line-height:1.25">{{ r.name }}</div>
+                      <div style="display:flex;align-items:center;gap:5px;margin-top:6px;font-size:11.5px;color:#514A45;font-weight:500;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="#E03E2F" style="flex:none"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"></path></svg>
+                        <span>{{ r.rating }}</span><span style="color:#D5CCC6">·</span><span>{{ r.timeLabel }}</span>
                       </div>
-                      <button onclick="{{ r.onBookmark }}" style="display:flex;flex-direction:column;align-items:center;gap:3px;border:none;background:transparent;cursor:pointer;flex:none;padding:0">
-                        <svg width="18" height="18" viewBox="0 0 47 47" fill="{{ r.heartStroke }}"><path d="M9.3999 9.39995C9.3999 6.80761 11.5076 4.69995 14.0999 4.69995H32.8999C35.4922 4.69995 37.5999 6.80761 37.5999 9.39995V40.0307C37.5999 41.9107 35.5069 43.027 33.9427 41.9842L23.4999 35.0149L13.0571 41.9842C11.4929 43.027 9.3999 41.9034 9.3999 40.0307V9.39995Z" fill="{{ r.heartFill }}"></path><path d="M9.3999 9.39995C9.3999 6.80761 11.5076 4.69995 14.0999 4.69995H32.8999C35.4922 4.69995 37.5999 6.80761 37.5999 9.39995V40.0307C37.5999 41.9107 35.5069 43.027 33.9427 41.9842L23.4999 35.0149L13.0571 41.9842C11.4929 43.027 9.3999 41.9034 9.3999 40.0307V9.39995ZM14.0999 8.22495C13.4537 8.22495 12.9249 8.7537 12.9249 9.39995V37.8349L21.5465 32.0921C22.7288 31.3064 24.271 31.3064 25.4533 32.0921L34.0749 37.8349V9.39995C34.0749 8.7537 33.5462 8.22495 32.8999 8.22495H14.0999Z"></path></svg>
-                        <span style="font-size:11px;font-weight:600;color:#6E655F;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif">{{ r.likes }}</span>
-                      </button>
                     </div>
                   </div>
                 </sc-for>
@@ -1258,24 +1237,22 @@ class Component extends DCLogic {
         emoji: m.emoji,
         onToggle: () => this.toggleAvoid(listKey, m.value),
         style: {
-          position:'relative',
-          display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:'7px',
-          padding:'12px 11px', borderRadius:'14px', width:'100%', cursor:'pointer',
-          textAlign:'center', transition:'all .15s',
+          display:'flex', alignItems:'center', gap:'8px',
+          padding:'11px 17px', borderRadius:'999px', cursor:'pointer',
+          whiteSpace:'nowrap', transition:'all .15s',
           background: on ? '#FCEBE8' : '#fff',
           border: on ? '2px solid #E03E2F' : '1.5px solid #ECE6E2',
-          boxShadow: on ? '0 8px 18px -12px rgba(224,62,47,.6)' : '0 4px 12px -10px rgba(60,30,20,.35)',
+          boxShadow: on ? '0 6px 14px -10px rgba(224,62,47,.6)' : '0 3px 10px -9px rgba(60,30,20,.35)',
         },
-        // remove affordance: only visible once the card is actually selected
+        // remove affordance: only visible once the pill is actually selected
         xStyle: {
-          position:'absolute', top:'5px', right:'5px',
-          width:'18px', height:'18px', borderRadius:'50%', background:'#E03E2F',
-          display:'flex', alignItems:'center', justifyContent:'center',
-          opacity: on ? 1 : 0, transition:'opacity .15s', pointerEvents:'none',
+          display: on ? 'flex' : 'none', alignItems:'center', justifyContent:'center',
+          width:'16px', height:'16px', borderRadius:'50%', background:'#E03E2F',
+          marginLeft:'1px', pointerEvents:'none',
         },
-        emojiStyle: { fontSize:'19px', lineHeight:1 },
+        emojiStyle: { fontSize:'16px', lineHeight:1 },
         labelStyle: {
-          fontFamily:"-apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif", fontSize:'12.5px', fontWeight:700,
+          fontFamily:"-apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif", fontSize:'13px', fontWeight:600,
           letterSpacing:'-.1px', color: on ? '#C42A1A' : '#1B1714', lineHeight:1.2,
         },
       };
@@ -1283,10 +1260,10 @@ class Component extends DCLogic {
   }
 
   // chips for anything picked via search that isn't one of the nine cards
+  // Every food the user has added shows as a removable token — search is now
+  // the only way to add, so no preset filtering: render the whole selection.
   extraChips(meta, listKey) {
-    const known = meta.map(m => m.value);
     return (this.state[listKey] || [])
-      .filter(v => known.indexOf(v) < 0)
       .map(v => ({
         label: v,
         onToggle: () => this.toggleAvoid(listKey, v),
@@ -1323,6 +1300,33 @@ class Component extends DCLogic {
       labelStyle: {
         fontFamily:"'Poppins', sans-serif", fontSize:'15px', fontWeight:700,
         color: on ? '#C42A1A' : '#1B1714',
+      },
+    };
+  }
+
+  // Pill-shaped "none" token, styled to sit inline with the avoidCard pills.
+  nonePill(listKey, emoji) {
+    const on = !!this.state[this.noneKeyFor(listKey)];
+    return {
+      emoji,
+      onToggle: () => this.setNone(listKey),
+      style: {
+        display:'flex', alignItems:'center', gap:'8px',
+        padding:'11px 17px', borderRadius:'999px', cursor:'pointer',
+        whiteSpace:'nowrap', transition:'all .15s',
+        background: on ? '#FCEBE8' : '#fff',
+        border: on ? '2px solid #E03E2F' : '1.5px solid #ECE6E2',
+        boxShadow: on ? '0 6px 14px -10px rgba(224,62,47,.6)' : '0 3px 10px -9px rgba(60,30,20,.35)',
+      },
+      emojiStyle: { fontSize:'16px', lineHeight:1 },
+      labelStyle: {
+        fontFamily:"-apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif", fontSize:'13px', fontWeight:600,
+        letterSpacing:'-.1px', color: on ? '#C42A1A' : '#1B1714', lineHeight:1.2,
+      },
+      xStyle: {
+        display: on ? 'flex' : 'none', alignItems:'center', justifyContent:'center',
+        width:'16px', height:'16px', borderRadius:'50%', background:'#E03E2F',
+        marginLeft:'1px', pointerEvents:'none',
       },
     };
   }
@@ -1718,8 +1722,8 @@ class Component extends DCLogic {
       searchPicker: this.buildSearchPicker(),
       allergyPicker: this.buildAvoidPicker('allergies', this.allergyAll, 'Search foods you\u2019re allergic to\u2026'),
       dislikePicker: this.buildAvoidPicker('dislikes', this.dislikeAll, 'Search foods to avoid\u2026'),
-      noneAllergy: this.noneCard('allergies'),
-      noneDislike: this.noneCard('dislikes'),
+      noneAllergy: this.nonePill('allergies', '\u{2705}'),
+      noneDislike: this.nonePill('dislikes', '\u{1F44C}'),
       ingredientChips: this.kitchenOpts.map(o => ({ label:o, icon:this.kitchenIcons[o]||'fa-solid fa-utensils', onToggle:()=>this.toggleList('kitchen',o), style:this.chipStyle(s.kitchen.indexOf(o)>=0) })),
       // Same source list and same `diet` state as the Diet onboarding screen, so a
       // change in either place shows up in the other. "No restrictions" is omitted
