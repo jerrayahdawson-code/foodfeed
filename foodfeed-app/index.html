@@ -72,11 +72,15 @@
     <button onclick="{{ goCooking }}" style="background:#E03E2F;color:#fff;border:none;border-radius:7px;padding:6px 11px;font-family:-apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;box-shadow:0 1px 2px rgba(0,0,0,.25)">Cooking</button></div>
 <div style="min-height:100vh;width:100%;display:flex;align-items:center;justify-content:center;background:radial-gradient(120% 90% at 50% 0%, #F3ECE7 0%, #E9E0D9 60%, #E2D8D0 100%);font-family:-apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif;padding:40px 16px">
 
-  <div style="width:390px;height:844px;background:#0E0B0A;border-radius:52px;padding:11px;box-shadow:0 50px 90px -30px rgba(60,30,20,.55), 0 0 0 1px rgba(0,0,0,.06);position:relative;flex:none">
-    <div style="width:100%;height:100%;background:#FAF7F5;border-radius:42px;overflow:hidden;position:relative">
+  <!-- iPhone 14 Pro Max — 430 x 932pt -->
+  <div style="width:430px;height:932px;background:#0E0B0A;border-radius:66px;padding:12px;box-shadow:0 50px 90px -30px rgba(60,30,20,.55), 0 0 0 1px rgba(0,0,0,.06);position:relative;flex:none">
+    <div style="width:100%;height:100%;background:#FAF7F5;border-radius:54px;overflow:hidden;position:relative">
+
+      <!-- dynamic island -->
+      <div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:125px;height:37px;border-radius:19px;background:#0E0B0A;z-index:70;pointer-events:none"></div>
 
       <!-- status bar -->
-      <div style="position:absolute;top:0;left:0;right:0;height:50px;z-index:60;display:flex;align-items:flex-end;justify-content:space-between;padding:0 30px 8px;pointer-events:none">
+      <div style="position:absolute;top:0;left:0;right:0;height:59px;z-index:60;display:flex;align-items:center;justify-content:space-between;padding:0 34px;pointer-events:none">
         <div style="font-size:15px;font-weight:700;letter-spacing:.2px;color:{{ statusColor }}">9:41</div>
         <div style="display:flex;align-items:center;gap:6px;color:{{ statusColor }}">
           <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="1"></rect><rect x="5" y="4.5" width="3" height="7.5" rx="1"></rect><rect x="10" y="2" width="3" height="10" rx="1"></rect><rect x="15" y="0" width="3" height="12" rx="1" opacity=".4"></rect></svg>
@@ -84,6 +88,9 @@
           <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor" opacity=".4"></rect><rect x="2" y="2" width="17" height="8" rx="1.5" fill="currentColor"></rect><rect x="23" y="4" width="1.5" height="4" rx="1" fill="currentColor" opacity=".5"></rect></svg>
         </div>
       </div>
+
+      <!-- home indicator -->
+      <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);width:140px;height:5px;border-radius:3px;background:{{ statusColor }};opacity:.85;z-index:65;pointer-events:none"></div>
 
       <!-- SCREENS -->
 
