@@ -13,58 +13,167 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CSV = join(root, 'foodfeed-app/data/ingredients.csv');
 const HTML = join(root, 'foodfeed-app/index.html');
 
-// One emoji per category, used for anything EMOJI_RULES doesn't claim.
-const CAT_EMOJI = {
-  'Meat & Poultry': '\u{1F969}', 'Seafood': '\u{1F41F}', 'Vegetables': '\u{1F96C}',
-  'Aromatics': '\u{1F9C4}', 'Grains & Rice': '\u{1F33E}', 'Pasta & Noodles': '\u{1F35D}',
-  'Beans & Legumes': '\u{1FAD8}', 'Dairy': '\u{1F9C0}', 'Eggs': '\u{1F95A}',
-  'Bread & Bakery': '\u{1F35E}', 'Flours & Baking': '\u{1F9C1}', 'Oils & Fats': '\u{1FAD2}',
-  'Herbs & Spices': '\u{1F33F}', 'Sauces & Condiments': '\u{1F963}', 'Canned & Jarred': '\u{1F96B}',
-  'Fruits': '\u{1F34E}', 'Nuts & Seeds': '\u{1F95C}', 'Nut & Seed Butters': '\u{1F95C}',
-  'Breakfast': '\u{1F963}', 'Cooking Liquids & Vinegars': '\u{1F9C3}',
-  'International & Specialty': '\u{1F371}', 'Sweets & Desserts': '\u{1F36C}',
+// Chips run on six colour families rather than one colour per category, so a
+// long result list reads as a handful of food groups instead of 22 tints.
+// Light = background fill, dark = text, icon and border.
+//
+// The darks were picked for hue separation first — after darkening enough for
+// AAA, near hues collapse into the same brown — and the tints are pinned bright
+// enough to still read as coloured chips on white. Both invariants are asserted
+// below, so a hand-edit that breaks either one fails the build.
+const PALETTE = {
+  red:    { bg: '#FADCE0', fg: '#841829' }, // protein & fresh red
+  orange: { bg: '#FCE3C8', fg: '#6A3A0B' }, // cooked / sauce orange
+  olive:  { bg: '#ECEEBE', fg: '#404D0C' }, // earthy dry staples
+  green:  { bg: '#DBEFDB', fg: '#1D5127' }, // fresh produce green
+  blue:   { bg: '#DAE6F8', fg: '#19457D' }, // chilled blue
+  purple: { bg: '#E8DFF7', fg: '#572D89' }, // dessert violet
 };
 
-// First matching pattern wins, so put the specific ones above the general ones.
+// Every catalog category, with the emoji anything in it falls back to and the
+// family its chip belongs to. Six categories aren't named in the mapping matrix
+// and are placed by the family descriptions: Aromatics is fresh produce,
+// Flours & Baking / Nut & Seed Butters / Breakfast are dry staples, and
+// Cooking Liquids & Vinegars / International & Specialty are sauces and pastes.
+const CAT_STYLE = {
+  'Meat & Poultry':             { emoji: '\u{1F969}', palette: 'red' },
+  'Fruits':                     { emoji: '\u{1F34E}', palette: 'red' },
+  'Seafood':                    { emoji: '\u{1F41F}', palette: 'blue' },
+  'Dairy':                      { emoji: '\u{1F9C0}', palette: 'blue' },
+  'Eggs':                       { emoji: '\u{1F95A}', palette: 'blue' },
+  'Vegetables':                 { emoji: '\u{1F96C}', palette: 'green' },
+  'Aromatics':                  { emoji: '\u{1F9C4}', palette: 'green' },
+  'Herbs & Spices':             { emoji: '\u{1F33F}', palette: 'green' },
+  'Grains & Rice':              { emoji: '\u{1F33E}', palette: 'olive' },
+  'Bread & Bakery':             { emoji: '\u{1F35E}', palette: 'olive' },
+  'Flours & Baking':            { emoji: '\u{1F9C1}', palette: 'olive' },
+  'Beans & Legumes':            { emoji: '\u{1FAD8}', palette: 'olive' },
+  'Nuts & Seeds':               { emoji: '\u{1F95C}', palette: 'olive' },
+  'Nut & Seed Butters':         { emoji: '\u{1F95C}', palette: 'olive' },
+  'Breakfast':                  { emoji: '\u{1F963}', palette: 'olive' },
+  'Pasta & Noodles':            { emoji: '\u{1F35D}', palette: 'orange' },
+  'Oils & Fats':                { emoji: '\u{1FAD2}', palette: 'orange' },
+  'Sauces & Condiments':        { emoji: '\u{1F963}', palette: 'orange' },
+  'Canned & Jarred':            { emoji: '\u{1F96B}', palette: 'orange' },
+  'Cooking Liquids & Vinegars': { emoji: '\u{1F9C3}', palette: 'orange' },
+  'International & Specialty':  { emoji: '\u{1F371}', palette: 'orange' },
+  'Sweets & Desserts':          { emoji: '\u{1F36C}', palette: 'purple' },
+};
+
+// WCAG relative luminance, and the contrast ratio between two hex colours.
+const channel = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+const rgbOf = (hex) => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+const luminance = (hex) => {
+  const [r, g, b] = rgbOf(hex);
+  return 0.2126 * channel(r) + 0.7152 * channel(g) + 0.0722 * channel(b);
+};
+const contrast = (a, b) => {
+  const [hi, lo] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (hi + 0.05) / (lo + 0.05);
+};
+const rgbDistance = (a, b) => Math.hypot(...rgbOf(a).map((v, i) => v - rgbOf(b)[i]));
+
+const AAA = 7;          // WCAG AAA for small text
+const MIN_TINT = 1.12;  // a chip has to read as tinted, not as white
+const MIN_HUE_GAP = 35; // and the six families have to read as six
+
+const fail = (msg, rows) => { throw new Error(msg + '\n  ' + rows.join('\n  ')); };
+
+const dim = Object.entries(PALETTE)
+  .map(([k, p]) => [k, contrast(p.fg, p.bg)])
+  .filter(([, r]) => r < AAA);
+if (dim.length) fail(`Chip colours below WCAG AAA (${AAA}:1):`, dim.map(([k, r]) => `${k} is ${r.toFixed(2)}:1`));
+
+const washedOut = Object.entries(PALETTE)
+  .map(([k, p]) => [k, contrast(p.bg, '#FFFFFF')])
+  .filter(([, r]) => r < MIN_TINT);
+if (washedOut.length) fail('Chip fills too close to white:', washedOut.map(([k, r]) => `${k} is ${r.toFixed(2)} vs white`));
+
+const keys = Object.keys(PALETTE);
+const tooClose = [];
+for (let i = 0; i < keys.length; i++) {
+  for (let j = i + 1; j < keys.length; j++) {
+    const d = rgbDistance(PALETTE[keys[i]].fg, PALETTE[keys[j]].fg);
+    if (d < MIN_HUE_GAP) tooClose.push(`${keys[i]}/${keys[j]} only ${d.toFixed(0)} apart`);
+  }
+}
+if (tooClose.length) fail(`Families read as the same colour (need ${MIN_HUE_GAP}+ apart):`, tooClose);
+
+// First matching pattern wins, so the specific ones go above the general ones.
+// Patterns are tested against the name lowercased with punctuation flattened to
+// spaces, so \b works and "Half-and-half" reads as "half and half".
 const EMOJI_RULES = [
-  [/^(whole )?chicken|chicken (breast|thigh|wing|drumstick|tender)|ground chicken/, '\u{1F357}'],
-  [/turkey/, '\u{1F983}'], [/duck/, '\u{1F986}'], [/lamb|venison|veal/, '\u{1F411}'],
-  [/bacon|pork belly|ham$/, '\u{1F953}'], [/sausage|chorizo|hot dog/, '\u{1F32D}'],
-  [/beef|steak|brisket|ground pork|pork (chop|loin|shoulder|tenderloin)/, '\u{1F969}'],
-  [/shrimp|prawn/, '\u{1F364}'], [/crab|crawfish/, '\u{1F980}'], [/lobster/, '\u{1F99E}'],
-  [/oyster|mussel|clam|scallop/, '\u{1F99A}'], [/octopus|calamari/, '\u{1F419}'],
-  [/mushroom/, '\u{1F344}'], [/tomato/, '\u{1F345}'], [/corn(?!starch|meal| flour)|hominy/, '\u{1F33D}'],
-  [/potato(?!\s*starch)/, '\u{1F954}'], [/sweet potato|yam/, '\u{1F360}'],
-  [/pumpkin|squash/, '\u{1F383}'], [/carrot|parsnip|radish|turnip|beet|rutabaga/, '\u{1F955}'],
-  [/broccoli|cauliflower|brussels/, '\u{1F966}'], [/cucumber|zucchini/, '\u{1F952}'],
-  [/eggplant/, '\u{1F346}'], [/jalape|serrano|habanero|poblano|cayenne|chili|harissa|sriracha|gochu|sambal/, '\u{1F336}️'],
-  [/pepper$|bell pepper|banana pepper|roasted red/, '\u{1FAD1}'],
-  [/pea(s|$)|edamame|snow pea|snap pea/, '\u{1FAD8}'], [/bean|lentil|chickpea|soybean/, '\u{1FAD8}'],
-  [/onion|shallot|scallion|leek|chive/, '\u{1F9C5}'], [/garlic/, '\u{1F9C4}'], [/ginger|turmeric/, '\u{1FADA}'],
-  [/rice$|rice(?! (noodle|paper|vinegar))/, '\u{1F35A}'], [/oats|granola|cereal|bran|cheerio|flake/, '\u{1F963}'],
-  [/noodle|ramen|udon|soba|glass noodle|chow mein/, '\u{1F35C}'],
-  [/spaghetti|linguine|fettuccine|penne|rigatoni|ziti|rotini|fusilli|farfalle|macaroni|shells|lasagna|ravioli|tortellini|orzo|angel hair|pasta/, '\u{1F35D}'],
-  [/cheese|parmesan|mozzarella|cheddar|gouda|brie|feta|ricotta|provolone|gruy|camembert|mascarpone|velveeta|queso|jack$/, '\u{1F9C0}'],
-  [/milk|cream|yogurt|buttermilk/, '\u{1F95B}'], [/egg/, '\u{1F95A}'],
-  [/tortilla|pita|naan|flatbread/, '\u{1FAD3}'], [/croissant/, '\u{1F950}'], [/bagel/, '\u{1F96F}'],
-  [/bread|baguette|ciabatta|sourdough|brioche|bun|roll|biscuit|breadcrumb|muffin/, '\u{1F35E}'],
-  [/chocolate|cocoa|nutella|oreo/, '\u{1F36B}'], [/sugar|sprinkle|marshmallow|caramel|candy/, '\u{1F36C}'],
-  [/honey|agave|molasses|syrup/, '\u{1F36F}'], [/jam|jelly|preserve|curd|marmalade/, '\u{1F353}'],
-  [/olive oil|olives/, '\u{1FAD2}'], [/butter$|salted butter|ghee/, '\u{1F9C8}'],
-  [/oil$|lard|shortening|grease/, '\u{1F9F4}'],
-  [/salt/, '\u{1F9C2}'], [/basil|parsley|cilantro|mint|thyme|rosemary|sage|dill|oregano|tarragon|marjoram|bay lea/, '\u{1F33F}'],
-  [/apple(?!\s*cider)/, '\u{1F34E}'], [/banana$|bananas/, '\u{1F34C}'], [/orange|tangerine/, '\u{1F34A}'],
-  [/lemon/, '\u{1F34B}'], [/lime/, '\u{1F34B}‍\u{1F7E9}'], [/grapefruit/, '\u{1F34A}'],
-  [/strawberr/, '\u{1F353}'], [/blueberr|blackberr|raspberr|cranberr/, '\u{1FAD0}'],
-  [/cherr/, '\u{1F352}'], [/peach|nectarine|apricot/, '\u{1F351}'], [/plum|fig|date/, '\u{1F7E3}'],
-  [/pear/, '\u{1F350}'], [/mango/, '\u{1F96D}'], [/pineapple/, '\u{1F34D}'], [/papaya|guava|passion/, '\u{1F96D}'],
-  [/kiwi/, '\u{1F95D}'], [/watermelon/, '\u{1F349}'], [/cantaloupe|honeydew|melon/, '\u{1F348}'],
-  [/grape|raisin/, '\u{1F347}'], [/pomegranate/, '\u{1F345}'], [/coconut/, '\u{1F965}'],
-  [/peanut/, '\u{1F95C}'], [/nut(s|$)|almond|walnut|pecan|cashew|pistachio|hazelnut|macadamia/, '\u{1F330}'],
-  [/seed/, '\u{1F331}'], [/broth|stock/, '\u{1F372}'], [/juice/, '\u{1F964}'], [/vinegar|cider/, '\u{1F9C3}'],
-  [/wine/, '\u{1F377}'], [/miso|kimchi|nori|furikake|wonton|spring roll|rice paper/, '\u{1F371}'],
-  [/curry|masala|tikka|tamarind/, '\u{1F35B}'], [/sauce|ketchup|mustard|mayo|aioli|pesto|marinara|salsa|hummus|tahini|tzatziki|chimichurri|glaze|dressing/, '\u{1F963}'],
-  [/canned|pickle|caper|artichoke heart/, '\u{1F96B}'],
+  // Pinned down first: names that a broader rule below would misread.
+  [/\bmustard powder\b/, '\u{1F33F}'], [/\b(steak|oyster) sauce\b/, '\u{1F963}'],
+  [/\b(wrappers?|rice paper|empanada dough|masa)\b/, '\u{1F371}'],
+  [/\b(granola|cheerios|raisin bran|shredded wheat|corn flakes|cream of wheat|pancake mix|waffle mix|hash browns)\b/, '\u{1F963}'],
+  [/\b(oats|grits)\b/, '\u{1F963}'],
+  [/\bcoconut\b/, '\u{1F965}'],
+  [/\b(chocolate|cocoa|nutella|oreo)\b/, '\u{1F36B}'],
+  [/\bmushrooms?\b/, '\u{1F344}'],
+  [/\b(broth|stock)\b/, '\u{1F372}'], [/\bjuice\b/, '\u{1F964}'],
+  [/\b(tortillas?|pita|naan|flatbread)\b/, '\u{1FAD3}'],
+  [/\bbagels?\b/, '\u{1F96F}'], [/\bcroissants?\b/, '\u{1F950}'],
+
+  // Meat, poultry and fish.
+  [/\bchickens?\b/, '\u{1F357}'], [/\bturkey\b/, '\u{1F983}'], [/\bduck\b/, '\u{1F986}'],
+  [/\blamb\b/, '\u{1F411}'], [/\b(veal|venison)\b/, '\u{1F969}'],
+  [/\b(bacon|pork belly|ham)\b/, '\u{1F953}'], [/\b(sausage|chorizo|hot dog)\b/, '\u{1F32D}'],
+  [/\b(beef|steak|brisket|sirloin|ribeye|pork)\b/, '\u{1F969}'],
+  [/\b(shrimp|prawns?)\b/, '\u{1F364}'], [/\b(crab|crawfish)\b/, '\u{1F980}'], [/\blobster\b/, '\u{1F99E}'],
+  [/\b(oysters?|mussels|clams|scallops)\b/, '\u{1F9AA}'], [/\b(octopus|calamari)\b/, '\u{1F419}'],
+
+  // Produce.
+  [/\btomato(es)?\b/, '\u{1F345}'], [/\bcorn\b/, '\u{1F33D}'],
+  [/\bsweet potato\b|\byams?\b/, '\u{1F360}'], [/\bpotato(es)?\b/, '\u{1F954}'],
+  [/\b(pumpkin|squash)\b(?! seeds)/, '\u{1F383}'], [/\b(carrots|parsnips|radishes|turnips|beets|rutabaga)\b/, '\u{1F955}'],
+  [/\b(broccoli|broccolini|cauliflower|brussels)\b/, '\u{1F966}'], [/\b(cucumber|zucchini)\b/, '\u{1F952}'],
+  [/\beggplant\b/, '\u{1F346}'],
+  [/\b(jalapeno|serrano|poblano|habanero|cayenne|chili|red pepper|harissa|sriracha|gochujang|gochugaru|sambal)\b/, '\u{1F336}️'],
+  [/\b(black|white) pepper\b/, '\u{1F9C2}'], [/\bpeppers?\b(?! jack)/, '\u{1FAD1}'],
+  [/\blemongrass\b|\bchives\b/, '\u{1F33F}'],
+  [/\b(onions?|shallots|scallions|leeks)\b/, '\u{1F9C5}'], [/\bgarlic\b/, '\u{1F9C4}'],
+  [/\b(ginger|turmeric)\b/, '\u{1FADA}'],
+  [/\b(snow peas|snap peas|^peas)\b/, '\u{1FAD8}'],
+  [/\b(beans|lentils|chickpeas|soybeans|edamame|peas)\b/, '\u{1FAD8}'],
+
+  // Pasta and noodles before rice and eggs, so "rice noodles" and "egg noodles"
+  // both read as noodles.
+  [/\b(noodles|ramen|udon|soba)\b/, '\u{1F35C}'],
+  [/\b(spaghetti|linguine|fettuccine|penne|rigatoni|ziti|rotini|fusilli|farfalle|macaroni|shells|lasagna|ravioli|tortellini|orzo|angel hair|pasta)\b/, '\u{1F35D}'],
+
+  // Dairy, eggs and bread.
+  [/\b(cheese|parmesan|mozzarella|cheddar|gouda|brie|feta|ricotta|provolone|gruyere|camembert|mascarpone|velveeta|queso|jack)\b/, '\u{1F9C0}'],
+  [/\b(milk|cream|yogurt|buttermilk|half and half)\b/, '\u{1F95B}'], [/\beggs?\b/, '\u{1F95A}'],
+  [/\bbread\b(?! flour)|\b(baguette|ciabatta|sourdough|brioche|buns|rolls|biscuits|breadcrumbs|muffins)\b/, '\u{1F35E}'],
+
+  [/\b(vinegar|cider)\b/, '\u{1F9C3}'], [/\bwine\b/, '\u{1F377}'], [/\brice\b/, '\u{1F35A}'],
+
+  // Nuts, seeds, fats and sweeteners.
+  [/\bseeds\b/, '\u{1F331}'], [/\bpeanuts?\b/, '\u{1F95C}'],
+  [/\b(nuts|almond|walnuts|pecans|cashews?|pistachios|hazelnuts|macadamia)\b/, '\u{1F330}'],
+  [/\b(olive oil|olives)\b/, '\u{1FAD2}'], [/\bbutter\b(?! cups)|\bghee\b/, '\u{1F9C8}'],
+  [/\b(lard|shortening)\b/, '\u{1F9C8}'], [/\b(oil|grease)\b/, '\u{1F9F4}'],
+  [/\bsalt\b/, '\u{1F9C2}'], [/\b(za atar|sumac)\b/, '\u{1F33F}'],
+  [/\b(sugar|sprinkles|marshmallows|caramel)\b/, '\u{1F36C}'],
+  [/\b(honey|agave|molasses|syrup)\b/, '\u{1F36F}'],
+  [/\b(jam|jelly|preserves|curd|marmalade)\b/, '\u{1F353}'],
+
+  // Fruit.
+  [/\bapples?\b(?! cider)/, '\u{1F34E}'], [/\bbananas\b/, '\u{1F34C}'],
+  [/\b(oranges|tangerines|grapefruit)\b/, '\u{1F34A}'], [/\blimes?\b/, '\u{1F34B}‍\u{1F7E9}'],
+  [/\blemons?\b/, '\u{1F34B}'], [/\bstrawberr/, '\u{1F353}'],
+  [/\b(blueberries|raspberries|blackberries|cranberries)\b/, '\u{1FAD0}'], [/\bcherries\b/, '\u{1F352}'],
+  [/\b(peaches|nectarines|apricots)\b/, '\u{1F351}'], [/\b(plums|figs|dates)\b/, '\u{1F7E3}'],
+  [/\bpears?\b/, '\u{1F350}'], [/\b(mango|papaya|guava|passion fruit)\b/, '\u{1F96D}'],
+  [/\bpineapple\b/, '\u{1F34D}'], [/\bkiwi\b/, '\u{1F95D}'], [/\bwatermelon\b/, '\u{1F349}'],
+  [/\b(cantaloupe|honeydew|melon)\b/, '\u{1F348}'], [/\b(grapes|raisins)\b/, '\u{1F347}'],
+
+  // Herbs, and the prepared jars and pastes.
+  [/\b(basil|parsley|cilantro|mint|thyme|rosemary|sage|dill|oregano|tarragon|marjoram|bay leaves)\b/, '\u{1F33F}'],
+  [/\b(miso|kimchi|nori|furikake)\b/, '\u{1F371}'], [/\b(curry|masala|tikka|tamarind)\b/, '\u{1F35B}'],
+  [/\b(sauce|ketchup|mustard|mayonnaise|aioli|pesto|marinara|salsa|hummus|tahini|tzatziki|chimichurri|glaze|dressing)\b/, '\u{1F963}'],
+  [/\b(canned|pickles|capers|artichoke hearts)\b/, '\u{1F96B}'],
 ];
 
 // Words people type that aren't the catalog name. Keyed by exact CSV name.
@@ -206,7 +315,8 @@ function parseCsv(text) {
 }
 
 const emojiFor = (name) => {
-  const n = name.toLowerCase();
+  const n = name.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ').trim();
   for (const [re, e] of EMOJI_RULES) if (re.test(n)) return e;
   return '';
 };
@@ -225,8 +335,8 @@ const tagsFor = (row) => {
 
 const rows = parseCsv(readFileSync(CSV, 'utf8'));
 const cats = [...new Set(rows.map(r => r.category))];
-const unknown = cats.filter(c => !CAT_EMOJI[c]);
-if (unknown.length) throw new Error('No CAT_EMOJI for: ' + unknown.join(', '));
+const unknown = cats.filter(c => !CAT_STYLE[c]);
+if (unknown.length) throw new Error('No CAT_STYLE for: ' + unknown.join(', '));
 
 const usedSyn = new Set();
 const pack = cats.map(cat => rows.filter(r => r.category === cat).map(r => {
@@ -238,7 +348,7 @@ const pack = cats.map(cat => rows.filter(r => r.category === cat).map(r => {
   const emoji = emojiFor(name);
   const tags = tagsFor(r);
   return name
-    + (emoji && emoji !== CAT_EMOJI[cat] ? '=' + emoji : '')
+    + (emoji && emoji !== CAT_STYLE[cat].emoji ? '=' + emoji : '')
     + (syn.length ? '~' + syn.join(';') : '')
     + (tags ? '#' + tags : '');
 }).join('|'));
@@ -248,10 +358,17 @@ if (stale.length) throw new Error('SYNONYMS keys not in the CSV: ' + stale.join(
 
 const q = s => "'" + s.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
 const block = [
-  '  // Categories the catalog is grouped under, each with the emoji anything in it',
-  '  // falls back to.',
+  '  // Categories the catalog is grouped under: display name, the emoji anything',
+  '  // in it falls back to, and the fill/ink of the chip the search results tag it',
+  '  // with. Colours come from six shared families, so 22 categories read as six',
+  '  // food groups; every pair clears WCAG AAA (7:1) and the generator refuses to',
+  '  // build one that does not.',
   '  ingredientCats = [',
-  ...cats.map(c => `    [${q(c)}, ${q(CAT_EMOJI[c])}],`),
+  ...cats.map(c => {
+    const { emoji, palette } = CAT_STYLE[c];
+    const { bg, fg } = PALETTE[palette];
+    return `    [${q(c)}, ${q(emoji)}, ${q(bg)}, ${q(fg)}], // ${palette}`;
+  }),
   '  ];',
   '  // One packed string per category, entries split on "|":',
   '  //   Name[=emoji][~synonym;synonym][#tags]   tags: P high-protein, F fresh, S pantry',
@@ -267,5 +384,9 @@ const si = html.indexOf(start), ei = html.indexOf(end);
 if (si < 0 || ei < 0) throw new Error('Markers not found in index.html');
 writeFileSync(HTML, html.slice(0, si) + start + '\n' + block + '\n' + end + html.slice(ei + end.length));
 
+const worstContrast = Math.min(...Object.values(PALETTE).map(p => contrast(p.fg, p.bg)));
+const counts = keys.map(k => `${k} ${Object.values(CAT_STYLE).filter(c => c.palette === k).length}`);
 console.log(`${rows.length} ingredients, ${cats.length} categories, ` +
   `${Object.values(SYNONYMS).reduce((n, a) => n + a.length, 0)} synonyms → index.html`);
+console.log(`${keys.length} colour families (${counts.join(', ')})`);
+console.log(`worst chip contrast ${worstContrast.toFixed(2)}:1 (WCAG AAA needs ${AAA}:1)`);
