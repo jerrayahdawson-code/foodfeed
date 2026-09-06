@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Editor / tool scratch
+~ai-*.tmp
+.claude/settings.local.json
+
+# Archives
+*.zip

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<template id="__bundler_thumbnail" data-bg-color="#D6321F">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#D6321F"/>
+    <rect x="488" y="210" width="224" height="430" rx="46" fill="none" stroke="#ffffff" stroke-width="14" stroke-opacity="0.85"/>
+    <g transform="translate(600 380)" fill="none" stroke="#ffffff" stroke-width="16" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M-46 -70 V -16 a18 18 0 0 0 36 0 V -70 M -28 -70 V 78"/>
+      <path d="M44 -70 c -22 0 -34 26 -34 64 s 12 64 34 64 M 44 -70 V 78"/>
+    </g>
+    <text x="600" y="585" text-anchor="middle" fill="#ffffff" font-family="Georgia, serif" font-weight="800" font-size="54" letter-spacing="-1">Foodfeed</text>
+  </svg>
+</template>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="./image-slot.js"></script>
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{margin:0}
+  ::-webkit-scrollbar{width:0;height:0;display:none}
+  .ffscroll{scrollbar-width:none;-ms-overflow-style:none}
+  @keyframes ffIn{from{transform:translateY(10px)}to{transform:none}}
+  @keyframes ffFade{from{transform:translateY(4px)}to{transform:none}}
+  @keyframes ffPop{from{transform:scale(.95)}to{transform:none}}
+  @keyframes ffStagger{from{transform:translateY(12px)}to{transform:none}}
+  image-slot{--x:0}
+</style>
+</helmet>
+<div style="min-height:100vh;width:100%;display:flex;align-items:center;justify-content:center;background:radial-gradient(120% 90% at 50% 0%, #F3ECE7 0%, #E9E0D9 60%, #E2D8D0 100%);font-family:'Poppins',system-ui,sans-serif;padding:40px 16px">
+
+  <div style="width:390px;height:844px;background:#0E0B0A;border-radius:52px;padding:11px;box-shadow:0 50px 90px -30px rgba(60,30,20,.55), 0 0 0 1px rgba(0,0,0,.06);position:relative;flex:none">
+    <div style="width:100%;height:100%;background:#FAF7F5;border-radius:42px;overflow:hidden;position:relative">
+
+      <!-- status bar -->
+      <div style="position:absolute;top:0;left:0;right:0;height:50px;z-index:60;display:flex;align-items:flex-end;justify-content:space-between;padding:0 30px 8px;pointer-events:none">
+        <div style="font-size:15px;font-weight:700;letter-spacing:.2px;color:{{ statusColor }}">9:41</div>
+        <div style="display:flex;align-items:center;gap:6px;color:{{ statusColor }}">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="1"/><rect x="5" y="4.5" width="3" height="7.5" rx="1"/><rect x="10" y="2" width="3" height="10" rx="1"/><rect x="15" y="0" width="3" height="12" rx="1" opacity=".4"/></svg>
+          <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><path d="M8.5 2.3c2.3 0 4.4.9 6 2.3l1.2-1.4C13.8 1.5 11.3.5 8.5.5S3.2 1.5 1.3 3.2L2.5 4.6c1.6-1.4 3.7-2.3 6-2.3z"/><path d="M8.5 6c1.2 0 2.3.5 3.1 1.2l1.2-1.4C11.7 4.7 10.2 4 8.5 4S5.3 4.7 4.2 5.8l1.2 1.4C6.2 6.5 7.3 6 8.5 6z" opacity=".85"/><circle cx="8.5" cy="10" r="1.6"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor" opacity=".4"/><rect x="2" y="2" width="17" height="8" rx="1.5" fill="currentColor"/><rect x="23" y="4" width="1.5" height="4" rx="1" fill="currentColor" opacity=".5"/></svg>
+        </div>
+      </div>
+
+      <!-- SCREENS -->
+
+      <!-- SPLASH -->
+      <sc-if value="{{ isSplash }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Splash" style="position:absolute;inset:0;background:linear-gradient(168deg,#E8472F 0%, #D6321F 55%, #B91E12 100%);display:flex;flex-direction:column;animation:ffFade .4s ease">
+        <div style="position:absolute;inset:0;opacity:.10;background:radial-gradient(circle at 80% 15%, #fff 0, transparent 38%), radial-gradient(circle at 12% 85%, #fff 0, transparent 35%)"></div>
+        <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;position:relative;z-index:1">
+          <div style="width:84px;height:84px;border-radius:26px;background:rgba(255,255,255,.14);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;border:1px solid rgba(255,255,255,.22);animation:ffPop .6s .05s both cubic-bezier(.2,.8,.2,1)">
+            <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2"/><path d="M5 2v20"/><path d="M17 2c-1.7 0-3 2-3 5s1.3 5 3 5"/><path d="M17 2v20"/></svg>
+          </div>
+          <div style="text-align:center;animation:ffIn .6s .15s both">
+            <div style="font-family:'Poppins';font-weight:800;font-size:40px;color:#fff;letter-spacing:-1px">Foodfeed</div>
+            <div style="color:rgba(255,255,255,.8);font-size:15.5px;margin-top:6px;font-weight:500">Cook what you're craving.</div>
+          </div>
+        </div>
+        <div style="padding:0 26px 46px;position:relative;z-index:1;animation:ffIn .6s .3s both">
+          <div style="display:flex;gap:6px;justify-content:center;margin-bottom:26px">
+            <div style="width:22px;height:6px;border-radius:3px;background:#fff"></div>
+            <div style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.45)"></div>
+            <div style="width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.45)"></div>
+          </div>
+          <button onClick="{{ goSignup }}" style="width:100%;height:54px;border:none;border-radius:16px;background:#fff;color:#C42A1A;font-family:'Poppins',system-ui,sans-serif;font-size:16.5px;font-weight:700;cursor:pointer;box-shadow:0 10px 24px -8px rgba(0,0,0,.3)">Get started</button>
+          <div style="text-align:center;margin-top:18px;color:rgba(255,255,255,.85);font-size:14px">Already have an account? <span onClick="{{ goHome }}" style="color:#fff;font-weight:700;cursor:pointer;text-decoration:underline;text-underline-offset:3px">Sign in</span></div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- SIGN UP -->
+      <sc-if value="{{ isSignup }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Sign Up" class="ffscroll" style="position:absolute;inset:0;overflow-y:auto;animation:ffIn .34s ease">
+        <div style="padding:62px 26px 40px">
+          <button onClick="{{ goSplash }}" style="width:40px;height:40px;border-radius:12px;border:1px solid #ECE6E2;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:22px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+          <h2 style="font-family:'Poppins';font-weight:700;font-size:29px;color:#1B1714;margin:0;letter-spacing:-.6px">Create your account</h2>
+          <p style="color:#7C736D;font-size:15px;margin:8px 0 26px;line-height:1.45">Let’s set up your profile!</p>
+
+          <div style="display:flex;gap:12px">
+            <div style="flex:1">
+              <label style="font-size:12.5px;font-weight:600;color:#8A817B;margin-bottom:7px;display:block">First name</label>
+              <input value="{{ form.firstName }}" onInput="{{ onFirstName }}" placeholder="Jordan" style="width:100%;height:50px;border:1.5px solid #ECE6E2;border-radius:14px;background:#fff;padding:0 15px;font-size:15px;font-family:'Poppins',system-ui,sans-serif;color:#1B1714;outline:none">
+            </div>
+            <div style="flex:1">
+              <label style="font-size:12.5px;font-weight:600;color:#8A817B;margin-bottom:7px;display:block">Last name</label>
+              <input value="{{ form.lastName }}" onInput="{{ onLastName }}" placeholder="Lee" style="width:100%;height:50px;border:1.5px solid #ECE6E2;border-radius:14px;background:#fff;padding:0 15px;font-size:15px;font-family:'Poppins',system-ui,sans-serif;color:#1B1714;outline:none">
+            </div>
+          </div>
+
+          <div style="margin-top:16px">
+            <label style="font-size:12.5px;font-weight:600;color:#8A817B;margin-bottom:7px;display:block">Username</label>
+            <input value="{{ form.username }}" onInput="{{ onUsername }}" placeholder="@jordancooks" style="width:100%;height:50px;border:1.5px solid #ECE6E2;border-radius:14px;background:#fff;padding:0 15px;font-size:15px;font-family:'Poppins',system-ui,sans-serif;color:#1B1714;outline:none">
+          </div>
+          <div style="margin-top:16px">
+            <label style="font-size:12.5px;font-weight:600;color:#8A817B;margin-bottom:7px;display:block">Email</label>
+            <input value="{{ form.email }}" onInput="{{ onEmail }}" placeholder="you@email.com" style="width:100%;height:50px;border:1.5px solid #ECE6E2;border-radius:14px;background:#fff;padding:0 15px;font-size:15px;font-family:'Poppins',system-ui,sans-serif;color:#1B1714;outline:none">
+          </div>
+          <div style="margin-top:16px">
+            <label style="font-size:12.5px;font-weight:600;color:#8A817B;margin-bottom:7px;display:block">Password</label>
+            <input value="{{ form.password }}" onInput="{{ onPassword }}" type="password" placeholder="At least 6 characters" style="width:100%;height:50px;border:1.5px solid #ECE6E2;border-radius:14px;background:#fff;padding:0 15px;font-size:15px;font-family:'Poppins',system-ui,sans-serif;color:#1B1714;outline:none">
+          </div>
+
+          <label style="display:flex;align-items:center;gap:11px;margin-top:22px;cursor:pointer" onClick="{{ toggleNews }}">
+            <span style="width:22px;height:22px;border-radius:7px;border:1.5px solid {{ newsBorder }};background:{{ newsBg }};display:flex;align-items:center;justify-content:center;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ newsCheck }}"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <span style="font-size:13.5px;color:#6E655F;line-height:1.35">Send me weekly recipe picks and cooking tips</span>
+          </label>
+
+          <button onClick="{{ submitSignup }}" style="width:100%;height:54px;border:none;border-radius:16px;background:{{ signupBtnBg }};color:#fff;font-family:'Poppins',system-ui,sans-serif;font-size:16.5px;font-weight:700;cursor:pointer;margin-top:26px;display:flex;align-items:center;justify-content:center;gap:9px;transition:background .2s;box-shadow:0 12px 26px -12px rgba(224,62,47,.7)">Create account <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <div style="text-align:center;margin-top:16px;color:#8A817B;font-size:13.5px">By continuing you agree to our Terms &amp; Privacy Policy.</div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- PREFERENCES INTRO -->
+      <sc-if value="{{ isIntro }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Preferences Intro" class="ffscroll" style="position:absolute;inset:0;overflow-y:auto;animation:ffIn .34s ease">
+        <div style="padding:70px 26px 40px;min-height:100%;display:flex;flex-direction:column">
+          <div style="text-align:center;color:#9A918B;font-size:13px;font-weight:600;letter-spacing:.4px;text-transform:uppercase">Personalize</div>
+          <h1 style="font-family:'Poppins';font-weight:700;font-size:30px;color:#1B1714;margin:8px 0 0;text-align:center;letter-spacing:-.6px">Hey Jordan 👋</h1>
+          <div style="display:flex;justify-content:center;margin:26px 0">
+            <div style="width:108px;height:108px;border-radius:50%;background:linear-gradient(150deg,#FCEBE8,#FBD9D1);display:flex;align-items:center;justify-content:center;border:1px solid #F6D3CB">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+            </div>
+          </div>
+          <h2 style="font-family:'Poppins';font-weight:700;font-size:23px;color:#1B1714;margin:0 0 8px;text-align:center;letter-spacing:-.3px">Tailor your feed to your taste</h2>
+          <p style="color:#7C736D;font-size:15px;text-align:center;margin:0 auto 26px;line-height:1.5;max-width:300px">Answer three quick questions and we'll personalize every recipe you see.</p>
+
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:auto">
+            <div style="display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #F0EAE6;border-radius:16px;padding:15px 16px">
+              <div style="width:40px;height:40px;border-radius:12px;background:#FCEBE8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2a2 2 0 0 0 2-2V2M5 2v20M16 11V2c-2 0-3 2-3 5s1 4 3 4zM16 11v11"/></svg></div>
+              <div><div style="font-weight:700;font-size:15px;color:#1B1714">Diet &amp; allergies</div><div style="font-size:13px;color:#8A817B">So we never suggest something you can't eat</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #F0EAE6;border-radius:16px;padding:15px 16px">
+              <div style="width:40px;height:40px;border-radius:12px;background:#FCEBE8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.4 3-5.5A4.5 4.5 0 0 0 12 5 4.5 4.5 0 0 0 2 8.5c0 2.1 1.5 4 3 5.5l7 7Z"/></svg></div>
+              <div><div style="font-weight:700;font-size:15px;color:#1B1714">Cuisines you love</div><div style="font-size:13px;color:#8A817B">More of the flavors you keep coming back to</div></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;background:#fff;border:1px solid #F0EAE6;border-radius:16px;padding:15px 16px">
+              <div style="width:40px;height:40px;border-radius:12px;background:#FCEBE8;display:flex;align-items:center;justify-content:center;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 0 12 0V3H6Z"/><path d="M6 5H4a2 2 0 0 0 0 4h2M18 5h2a2 2 0 0 1 0 4h-2M9 21h6M12 15v6"/></svg></div>
+              <div><div style="font-weight:700;font-size:15px;color:#1B1714">Eating goals</div><div style="font-size:13px;color:#8A817B">Calorie targets, high-protein, quick meals</div></div>
+            </div>
+          </div>
+
+          <div style="margin-top:28px">
+            <button onClick="{{ goDiet }}" style="width:100%;height:54px;border:none;border-radius:16px;background:#E03E2F;color:#fff;font-family:'Poppins',system-ui,sans-serif;font-size:16.5px;font-weight:700;cursor:pointer;box-shadow:0 12px 26px -12px rgba(224,62,47,.7)">Let's go</button>
+            <div style="text-align:center;margin-top:14px;color:#9A918B;font-size:13.5px">You can update preferences anytime.</div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- DIET -->
+      <sc-if value="{{ isDiet }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Diet" style="position:absolute;inset:0;display:flex;flex-direction:column;animation:ffIn .34s ease">
+        <div style="padding:60px 26px 0">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px">
+            <button onClick="{{ goIntro }}" style="width:40px;height:40px;border-radius:12px;border:1px solid #ECE6E2;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+            <div style="flex:1;display:flex;gap:6px">
+              <div style="flex:1;height:5px;border-radius:3px;background:#E03E2F"></div>
+              <div style="flex:1;height:5px;border-radius:3px;background:#EEE7E3"></div>
+              <div style="flex:1;height:5px;border-radius:3px;background:#EEE7E3"></div>
+            </div>
+            <span onClick="{{ goAllergies }}" style="font-size:14px;color:#9A918B;font-weight:600;cursor:pointer;flex:none">Skip</span>
+          </div>
+          <h1 style="font-family:'Poppins';font-weight:700;font-size:27px;color:#1B1714;margin:0;letter-spacing:-.5px">Choose your diet style</h1>
+          <p style="color:#7C736D;font-size:14.5px;margin:8px 0 18px;line-height:1.45">Pick any that fit how you like to eat. This shapes your recommendations.</p>
+        </div>
+        <div class="ffscroll" style="flex:1;overflow-y:auto;padding:0 26px 20px">
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <sc-for list="{{ dietChips }}" as="c" hint-placeholder-count="10">
+              <button onClick="{{ c.onToggle }}" style="{{ c.style }}">{{ c.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:14px 26px 30px;border-top:1px solid #F0EAE6;background:#FAF7F5">
+          <button onClick="{{ goAllergies }}" style="width:100%;height:54px;border:none;border-radius:16px;background:#E03E2F;color:#fff;font-family:'Poppins',system-ui,sans-serif;font-size:16.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 12px 26px -12px rgba(224,62,47,.7)">Continue <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- ALLERGIES -->
+      <sc-if value="{{ isAllergies }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Allergies" style="position:absolute;inset:0;display:flex;flex-direction:column;animation:ffIn .34s ease">
+        <div style="padding:60px 26px 0">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px">
+            <button onClick="{{ goDiet }}" style="width:40px;height:40px;border-radius:12px;border:1px solid #ECE6E2;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+            <div style="flex:1;display:flex;gap:6px">
+              <div style="flex:1;height:5px;border-radius:3px;background:#E03E2F"></div>
+              <div style="flex:1;height:5px;border-radius:3px;background:#E03E2F"></div>
+              <div style="flex:1;height:5px;border-radius:3px;background:#EEE7E3"></div>
+            </div>
+            <span onClick="{{ goDislikes }}" style="font-size:14px;color:#9A918B;font-weight:600;cursor:pointer;flex:none">Skip</span>
+          </div>
+          <h1 style="font-family:'Poppins';font-weight:700;font-size:27px;color:#1B1714;margin:0;letter-spacing:-.5px">Any allergies?</h1>
+          <p style="color:#7C736D;font-size:14.5px;margin:8px 0 18px;line-height:1.45">We'll hide recipes that contain these ingredients. Select all that apply.</p>
+        </div>
+        <div class="ffscroll" style="flex:1;overflow-y:auto;padding:0 26px 20px">
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <sc-for list="{{ allergyChips }}" as="c" hint-placeholder-count="10">
+              <button onClick="{{ c.onToggle }}" style="{{ c.style }}">{{ c.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:14px 26px 30px;border-top:1px solid #F0EAE6;background:#FAF7F5">
+          <button onClick="{{ goDislikes }}" style="width:100%;height:54px;border:none;border-radius:16px;background:#E03E2F;color:#fff;font-family:'Poppins',system-ui,sans-serif;font-size:16.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 12px 26px -12px rgba(224,62,47,.7)">Continue <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- DISLIKES -->
+      <sc-if value="{{ isDislikes }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Dislikes" style="position:absolute;inset:0;display:flex;flex-direction:column;animation:ffIn .34s ease">
+        <div style="padding:60px 26px 0">
+          <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px">
+            <button onClick="{{ goAllergies }}" style="width:40px;height:40px;border-radius:12px;border:1px solid #ECE6E2;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+            <div style="flex:1;display:flex;gap:6px">
+              <div style="flex:1;height:5px;border-radius:3px;background:#E03E2F"></div>
+              <div style="flex:1;height:5px;border-radius:3px;background:#E03E2F"></div>
+              <div style="flex:1;height:5px;border-radius:3px;background:#E03E2F"></div>
+            </div>
+            <span onClick="{{ goHome }}" style="font-size:14px;color:#9A918B;font-weight:600;cursor:pointer;flex:none">Skip</span>
+          </div>
+          <h1 style="font-family:'Poppins';font-weight:700;font-size:27px;color:#1B1714;margin:0;letter-spacing:-.5px">Ingredients you dislike</h1>
+          <p style="color:#7C736D;font-size:14.5px;margin:8px 0 18px;line-height:1.45">We'll quietly steer your feed away from these. Optional.</p>
+        </div>
+        <div class="ffscroll" style="flex:1;overflow-y:auto;padding:0 26px 20px">
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <sc-for list="{{ dislikeChips }}" as="c" hint-placeholder-count="10">
+              <button onClick="{{ c.onToggle }}" style="{{ c.style }}">{{ c.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+        <div style="padding:14px 26px 30px;border-top:1px solid #F0EAE6;background:#FAF7F5">
+          <button onClick="{{ goHome }}" style="width:100%;height:54px;border:none;border-radius:16px;background:#E03E2F;color:#fff;font-family:'Poppins',system-ui,sans-serif;font-size:16.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 12px 26px -12px rgba(224,62,47,.7)">Finish &amp; explore <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- HOME FEED -->
+      <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Home" class="ffscroll" style="position:absolute;inset:0;overflow-y:auto;animation:ffIn .34s ease">
+        <div style="position:sticky;top:0;z-index:40;background:rgba(250,247,245,.86);backdrop-filter:blur(12px);padding:52px 22px 12px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <div style="font-family:'Poppins';font-weight:800;font-size:24px;color:#1B1714;letter-spacing:-.6px">Foodfeed</div>
+            <div style="display:flex;gap:10px">
+              <button onClick="{{ goDiscover }}" style="width:40px;height:40px;border-radius:13px;border:1px solid #ECE6E2;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></button>
+              <button style="width:40px;height:40px;border-radius:13px;border:1px solid #ECE6E2;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span style="position:absolute;top:9px;right:10px;width:7px;height:7px;border-radius:50%;background:#E03E2F;border:1.5px solid #fff"></span></button>
+            </div>
+          </div>
+          <div class="ffscroll" style="display:flex;gap:8px;margin-top:14px;overflow-x:auto">
+            <sc-for list="{{ feedTabs }}" as="t" hint-placeholder-count="4">
+              <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="padding:6px 22px 120px">
+          <!-- featured -->
+          <div onClick="{{ heroOpen }}" style="position:relative;border-radius:24px;overflow:hidden;height:230px;cursor:pointer;box-shadow:0 18px 34px -20px rgba(60,30,20,.5);margin-bottom:8px;animation:ffStagger .5s both">
+            <image-slot id="r-shrimp" shape="rect" placeholder="Drop hero photo" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+            <div style="position:absolute;inset:0;background:linear-gradient(to top, rgba(20,8,4,.78) 0%, rgba(20,8,4,.18) 45%, rgba(20,8,4,.05) 100%);pointer-events:none"></div>
+            <div style="position:absolute;top:14px;left:14px;background:rgba(224,62,47,.95);color:#fff;font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:20px;letter-spacing:.3px;display:flex;align-items:center;gap:5px"><svg width="12" height="12" viewBox="0 0 24 24" fill="#fff"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg>Trending now</div>
+            <button onClick="{{ heroBookmark }}" style="position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="{{ heroHeartFill }}" stroke="{{ heroHeartStroke }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+            <div style="position:absolute;left:16px;right:16px;bottom:14px">
+              <div style="color:#fff;font-family:'Poppins';font-weight:700;font-size:21px;letter-spacing:-.3px">Zesty Shrimp Linguine</div>
+              <div style="display:flex;align-items:center;gap:10px;margin-top:6px;color:rgba(255,255,255,.92);font-size:12.5px;font-weight:500">
+                <span style="display:flex;align-items:center;gap:4px"><svg width="13" height="13" viewBox="0 0 24 24" fill="#F2A93B"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg>4.8</span>
+                <span>·</span><span>35 min</span><span>·</span><span>520 cal</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin:22px 2px 14px">
+            <h2 style="font-family:'Poppins';font-weight:700;font-size:19px;color:#1B1714;margin:0;letter-spacing:-.3px">Popular this week</h2>
+            <span style="color:#E03E2F;font-size:13.5px;font-weight:600;cursor:pointer">See all</span>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <sc-for list="{{ feedRecipes }}" as="r" hint-placeholder-count="6">
+              <div onClick="{{ r.onOpen }}" style="cursor:pointer;animation:ffStagger .5s both">
+                <div style="position:relative;border-radius:18px;overflow:hidden;aspect-ratio:1/1;background:#F0EAE6">
+                  <image-slot id="{{ r.slot }}" shape="rect" placeholder="Drop photo" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+                  <button onClick="{{ r.onBookmark }}" style="position:absolute;top:8px;right:8px;width:31px;height:31px;border-radius:50%;border:none;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="{{ r.heartFill }}" stroke="{{ r.heartStroke }}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
+                <div style="padding:9px 2px 0">
+                  <div style="font-weight:700;font-size:13.5px;color:#1B1714;line-height:1.25">{{ r.name }}</div>
+                  <div style="display:flex;align-items:center;gap:5px;margin-top:5px;font-size:11.5px;color:#968D87;font-weight:500"><svg width="12" height="12" viewBox="0 0 24 24" fill="#F2A93B"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg>{{ r.rating }} · {{ r.timeLabel }} · {{ r.cal }} cal</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- RECIPE DETAIL -->
+      <sc-if value="{{ isDetail }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Recipe Detail" style="position:absolute;inset:0;display:flex;flex-direction:column;animation:ffIn .34s ease">
+        <div class="ffscroll" style="flex:1;overflow-y:auto">
+          <!-- hero -->
+          <div style="position:relative;height:300px">
+            <image-slot id="{{ recipe.slot }}" shape="rect" placeholder="Drop recipe photo" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+            <div style="position:absolute;top:0;left:0;right:0;height:120px;background:linear-gradient(to bottom, rgba(20,8,4,.5), transparent);pointer-events:none"></div>
+            <button onClick="{{ detailBack }}" style="position:absolute;top:54px;left:18px;width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+            <div style="position:absolute;top:54px;right:18px;display:flex;gap:10px">
+              <button style="width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"/></svg></button>
+              <button onClick="{{ detailBookmark }}" style="width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="{{ recipe.heartFill }}" stroke="{{ recipe.heartStroke }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+            </div>
+          </div>
+
+          <!-- content card -->
+          <div style="position:relative;margin-top:-26px;background:#FAF7F5;border-radius:26px 26px 0 0;padding:22px 22px 30px">
+            <div style="width:42px;height:5px;border-radius:3px;background:#E2D9D2;margin:0 auto 18px"></div>
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:14px">
+              <h1 style="font-family:'Poppins';font-weight:700;font-size:25px;color:#1B1714;margin:0;letter-spacing:-.5px;line-height:1.15">{{ recipe.name }}</h1>
+              <div style="display:flex;align-items:center;gap:5px;background:#FFF;border:1px solid #F0E4D9;padding:6px 11px;border-radius:20px;flex:none"><svg width="14" height="14" viewBox="0 0 24 24" fill="#F2A93B"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg><span style="font-weight:700;font-size:14px;color:#1B1714">{{ recipe.rating }}</span></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:9px;margin-top:12px">
+              <div style="width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#FBD9D1,#F2A93B);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px">M</div>
+              <div style="font-size:13.5px;color:#6E655F">By <span style="font-weight:700;color:#1B1714">Maya Co.</span> · {{ recipe.reviews }} reviews</div>
+            </div>
+
+            <div style="display:flex;gap:10px;margin-top:18px">
+              <div style="flex:1;background:#fff;border:1px solid #F0EAE6;border-radius:15px;padding:12px 10px;text-align:center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:5px"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                <div style="font-weight:700;font-size:14px;color:#1B1714">{{ recipe.timeLabel }}</div>
+                <div style="font-size:11px;color:#9A918B">Total time</div>
+              </div>
+              <div style="flex:1;background:#fff;border:1px solid #F0EAE6;border-radius:15px;padding:12px 10px;text-align:center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:5px"><path d="M3 11h18M5 11a7 7 0 0 1 14 0M12 11V8M8 21h8"/></svg>
+                <div style="font-weight:700;font-size:14px;color:#1B1714">{{ recipe.difficulty }}</div>
+                <div style="font-size:11px;color:#9A918B">Difficulty</div>
+              </div>
+              <div style="flex:1;background:#fff;border:1px solid #F0EAE6;border-radius:15px;padding:12px 10px;text-align:center">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:5px"><path d="M12 2C8 6 8 9 10 11c1.5 1.5 1 3-1 4 4 1 9-2 9-7 0-2-1-4-2-5 0 2-1 3-2 3 0-3-2-5-2-4z"/></svg>
+                <div style="font-weight:700;font-size:14px;color:#1B1714">{{ recipe.cal }}</div>
+                <div style="font-size:11px;color:#9A918B">Calories</div>
+              </div>
+            </div>
+
+            <p style="color:#5E554F;font-size:14.5px;line-height:1.55;margin:18px 0 0">{{ recipe.desc }}</p>
+
+            <!-- tabs -->
+            <div style="display:flex;gap:4px;background:#F1EAE5;padding:4px;border-radius:14px;margin-top:20px">
+              <sc-for list="{{ detailTabs }}" as="t" hint-placeholder-count="4">
+                <button onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.label }}</button>
+              </sc-for>
+            </div>
+
+            <!-- INGREDIENTS -->
+            <sc-if value="{{ tabIngredients }}" hint-placeholder-val="{{ true }}">
+            <div style="animation:ffFade .3s">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin:20px 0 14px">
+                <div style="font-weight:700;font-size:15px;color:#1B1714">Ingredients</div>
+                <div style="display:flex;align-items:center;gap:0;background:#fff;border:1px solid #ECE6E2;border-radius:12px;overflow:hidden">
+                  <button onClick="{{ servingsDown }}" style="width:34px;height:34px;border:none;background:#fff;cursor:pointer;color:#1B1714;font-size:18px;display:flex;align-items:center;justify-content:center">−</button>
+                  <div style="min-width:58px;text-align:center;font-size:13px;font-weight:600;color:#1B1714">{{ servings }} servings</div>
+                  <button onClick="{{ servingsUp }}" style="width:34px;height:34px;border:none;background:#fff;cursor:pointer;color:#1B1714;font-size:18px;display:flex;align-items:center;justify-content:center">+</button>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:9px">
+                <sc-for list="{{ ingredientRows }}" as="i" hint-placeholder-count="6">
+                  <div onClick="{{ i.onToggle }}" style="display:flex;align-items:center;gap:13px;background:#fff;border:1px solid #F0EAE6;border-radius:14px;padding:13px 15px;cursor:pointer">
+                    <span style="width:23px;height:23px;border-radius:7px;border:1.5px solid {{ i.boxBorder }};background:{{ i.boxBg }};display:flex;align-items:center;justify-content:center;flex:none"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:{{ i.checkOpacity }}"><path d="M20 6 9 17l-5-5"/></svg></span>
+                    <span style="font-size:14.5px;color:{{ i.textColor }};text-decoration:{{ i.strike }};flex:1">{{ i.text }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            </sc-if>
+
+            <!-- STEPS -->
+            <sc-if value="{{ tabSteps }}" hint-placeholder-val="{{ true }}">
+            <div style="animation:ffFade .3s">
+              <div style="font-weight:700;font-size:15px;color:#1B1714;margin:20px 0 14px">{{ stepCount }} steps</div>
+              <div style="display:flex;flex-direction:column;gap:12px">
+                <sc-for list="{{ stepRows }}" as="s" hint-placeholder-count="6">
+                  <div style="display:flex;gap:14px;align-items:flex-start">
+                    <div style="width:30px;height:30px;border-radius:50%;background:#FCEBE8;color:#E03E2F;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;flex:none">{{ s.n }}</div>
+                    <div style="font-size:14.5px;color:#4E453F;line-height:1.5;padding-top:3px">{{ s.text }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+            </sc-if>
+
+            <!-- REVIEWS -->
+            <sc-if value="{{ tabReviews }}" hint-placeholder-val="{{ true }}">
+            <div style="animation:ffFade .3s">
+              <div style="display:flex;align-items:center;gap:18px;background:#fff;border:1px solid #F0EAE6;border-radius:18px;padding:18px;margin:20px 0 16px">
+                <div style="text-align:center;flex:none">
+                  <div style="font-family:'Poppins';font-weight:800;font-size:34px;color:#1B1714;line-height:1">{{ recipe.rating }}</div>
+                  <div style="display:flex;gap:2px;margin-top:5px">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="#F2A93B"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#F2A93B"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#F2A93B"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#F2A93B"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg><svg width="13" height="13" viewBox="0 0 24 24" fill="#E8DDD3"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg>
+                  </div>
+                  <div style="font-size:11px;color:#9A918B;margin-top:5px">{{ recipe.reviews }} reviews</div>
+                </div>
+                <div style="flex:1;display:flex;flex-direction:column;gap:5px">
+                  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#9A918B;width:8px">5</span><div style="flex:1;height:6px;border-radius:3px;background:#F0EAE6;overflow:hidden"><div style="width:82%;height:100%;background:#F2A93B"></div></div></div>
+                  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#9A918B;width:8px">4</span><div style="flex:1;height:6px;border-radius:3px;background:#F0EAE6;overflow:hidden"><div style="width:13%;height:100%;background:#F2A93B"></div></div></div>
+                  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#9A918B;width:8px">3</span><div style="flex:1;height:6px;border-radius:3px;background:#F0EAE6;overflow:hidden"><div style="width:4%;height:100%;background:#F2A93B"></div></div></div>
+                  <div style="display:flex;align-items:center;gap:8px"><span style="font-size:10px;color:#9A918B;width:8px">2</span><div style="flex:1;height:6px;border-radius:3px;background:#F0EAE6;overflow:hidden"><div style="width:1%;height:100%;background:#F2A93B"></div></div></div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <sc-for list="{{ reviewRows }}" as="rv" hint-placeholder-count="3">
+                  <div style="display:flex;gap:12px">
+                    <div style="width:38px;height:38px;border-radius:50%;background:{{ rv.avatarBg }};display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;flex:none">{{ rv.initial }}</div>
+                    <div style="flex:1">
+                      <div style="display:flex;align-items:center;justify-content:space-between"><div style="font-weight:700;font-size:14px;color:#1B1714">{{ rv.user }}</div><div style="font-size:12px;color:#A89F98">{{ rv.when }}</div></div>
+                      <div style="display:flex;gap:1px;margin:3px 0 4px">{{ rv.stars }}</div>
+                      <div style="font-size:13.5px;color:#5E554F;line-height:1.45">{{ rv.text }}</div>
+                    </div>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="display:flex;gap:10px;margin-top:18px;align-items:center">
+                <input placeholder="Add a review…" style="flex:1;height:46px;border:1.5px solid #ECE6E2;border-radius:14px;background:#fff;padding:0 15px;font-size:14px;font-family:'Poppins',system-ui,sans-serif;outline:none">
+                <button style="width:46px;height:46px;border-radius:14px;border:none;background:#E03E2F;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4z"/></svg></button>
+              </div>
+            </div>
+            </sc-if>
+
+            <!-- NUTRITION -->
+            <sc-if value="{{ tabNutrition }}" hint-placeholder-val="{{ true }}">
+            <div style="animation:ffFade .3s">
+              <div style="display:flex;gap:10px;margin:20px 0 16px">
+                <div style="flex:1;background:linear-gradient(150deg,#E8472F,#C42A1A);border-radius:18px;padding:16px;color:#fff">
+                  <div style="font-size:12.5px;opacity:.85;font-weight:500">Total calories</div>
+                  <div style="font-family:'Poppins';font-weight:800;font-size:26px;margin-top:3px">~655 kcal</div>
+                  <div style="font-size:11.5px;opacity:.8;margin-top:2px">per serving · serves 2</div>
+                </div>
+              </div>
+              <div style="background:#fff;border:1px solid #F0EAE6;border-radius:18px;overflow:hidden">
+                <sc-for list="{{ nutritionRows }}" as="n" hint-placeholder-count="6">
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid #F4EEEA">
+                    <span style="font-size:14px;color:#5E554F">{{ n.label }}</span>
+                    <span style="font-size:14px;font-weight:700;color:#1B1714">{{ n.value }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <div style="font-size:12px;color:#A89F98;margin-top:12px;line-height:1.4">Percent values are based on a 2,000 calorie diet.</div>
+            </div>
+            </sc-if>
+
+            <div style="height:20px"></div>
+          </div>
+        </div>
+        <!-- sticky CTA -->
+        <div style="padding:12px 22px 30px;border-top:1px solid #F0EAE6;background:#FAF7F5;display:flex;gap:11px">
+          <button onClick="{{ detailBookmark }}" style="width:54px;height:54px;border-radius:16px;border:1.5px solid #ECE6E2;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"><svg width="22" height="22" viewBox="0 0 24 24" fill="{{ recipe.heartFill }}" stroke="{{ recipe.heartStroke }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+          <button style="flex:1;height:54px;border:none;border-radius:16px;background:#E03E2F;color:#fff;font-family:'Poppins',system-ui,sans-serif;font-size:16.5px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 12px 26px -12px rgba(224,62,47,.7)"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 3 14 9-14 9z"/></svg>Start cooking</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- DISCOVER -->
+      <sc-if value="{{ isDiscover }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Discover" class="ffscroll" style="position:absolute;inset:0;overflow-y:auto;animation:ffIn .34s ease">
+        <div style="padding:56px 22px 120px">
+          <h1 style="font-family:'Poppins';font-weight:700;font-size:27px;color:#1B1714;margin:0 0 4px;letter-spacing:-.5px">Discover</h1>
+          <p style="color:#7C736D;font-size:14.5px;margin:0 0 16px;line-height:1.45">Search a dish, or add the ingredients you've got and we'll do the thinking.</p>
+          <div onClick="{{ goResults }}" style="display:flex;align-items:center;gap:11px;background:#fff;border:1.5px solid #ECE6E2;border-radius:16px;padding:0 15px;height:52px;cursor:text">
+            <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#9A918B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+            <span style="color:#A89F98;font-size:15px">Search recipes or ingredients</span>
+          </div>
+
+          <div style="font-weight:700;font-size:14px;color:#1B1714;margin:24px 0 12px">What's in your kitchen?</div>
+          <div style="display:flex;flex-wrap:wrap;gap:9px">
+            <sc-for list="{{ ingredientChips }}" as="c" hint-placeholder-count="8">
+              <button onClick="{{ c.onToggle }}" style="{{ c.style }}">{{ c.label }}</button>
+            </sc-for>
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin:26px 2px 14px">
+            <h2 style="font-family:'Poppins';font-weight:700;font-size:19px;color:#1B1714;margin:0;letter-spacing:-.3px">Trending searches</h2>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <sc-for list="{{ discoverRecipes }}" as="r" hint-placeholder-count="4">
+              <div onClick="{{ r.onOpen }}" style="cursor:pointer">
+                <div style="position:relative;border-radius:18px;overflow:hidden;aspect-ratio:1/1;background:#F0EAE6">
+                  <image-slot id="{{ r.slot }}" shape="rect" placeholder="Drop photo" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+                  <button onClick="{{ r.onBookmark }}" style="position:absolute;top:8px;right:8px;width:31px;height:31px;border-radius:50%;border:none;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="{{ r.heartFill }}" stroke="{{ r.heartStroke }}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
+                <div style="padding:9px 2px 0">
+                  <div style="font-weight:700;font-size:13.5px;color:#1B1714;line-height:1.25">{{ r.name }}</div>
+                  <div style="display:flex;align-items:center;gap:5px;margin-top:5px;font-size:11.5px;color:#968D87;font-weight:500"><svg width="12" height="12" viewBox="0 0 24 24" fill="#F2A93B"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg>{{ r.rating }} · {{ r.timeLabel }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- SEARCH RESULTS -->
+      <sc-if value="{{ isResults }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Search Results" class="ffscroll" style="position:absolute;inset:0;overflow-y:auto;animation:ffIn .34s ease">
+        <div style="position:sticky;top:0;z-index:40;background:rgba(250,247,245,.9);backdrop-filter:blur(12px);padding:52px 22px 12px">
+          <div style="display:flex;align-items:center;gap:11px">
+            <button onClick="{{ goDiscover }}" style="width:40px;height:40px;border-radius:13px;border:1px solid #ECE6E2;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+            <div style="flex:1;display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #ECE6E2;border-radius:14px;padding:0 13px;height:46px">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#9A918B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+              <span style="color:#1B1714;font-size:14.5px;font-weight:500">turkey burger</span>
+            </div>
+            <button onClick="{{ goFilter }}" style="width:46px;height:46px;border-radius:14px;border:none;background:#E03E2F;display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none;position:relative"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18M7 12h10M11 19h2"/></svg><span style="position:absolute;top:-3px;right:-3px;min-width:18px;height:18px;border-radius:9px;background:#1B1714;color:#fff;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0 5px">2</span></button>
+          </div>
+          <div class="ffscroll" style="display:flex;gap:8px;margin-top:12px;overflow-x:auto">
+            <div style="display:flex;align-items:center;gap:6px;background:#1B1714;color:#fff;border-radius:20px;padding:7px 12px;font-size:12.5px;font-weight:600;white-space:nowrap">Turkey <span onClick="{{ noop }}" style="cursor:pointer;opacity:.7">✕</span></div>
+            <div style="display:flex;align-items:center;gap:6px;background:#1B1714;color:#fff;border-radius:20px;padding:7px 12px;font-size:12.5px;font-weight:600;white-space:nowrap">Under 45 min <span style="cursor:pointer;opacity:.7">✕</span></div>
+            <div style="background:#fff;border:1px solid #ECE6E2;color:#6E655F;border-radius:20px;padding:7px 12px;font-size:12.5px;font-weight:600;white-space:nowrap">High protein</div>
+          </div>
+        </div>
+        <div style="padding:8px 22px 120px">
+          <div style="font-size:13.5px;color:#8A817B;font-weight:600;margin:6px 2px 14px">45 results</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <sc-for list="{{ resultsRecipes }}" as="r" hint-placeholder-count="6">
+              <div onClick="{{ r.onOpen }}" style="cursor:pointer">
+                <div style="position:relative;border-radius:18px;overflow:hidden;aspect-ratio:1/1;background:#F0EAE6">
+                  <image-slot id="{{ r.slot }}" shape="rect" placeholder="Drop photo" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+                  <button onClick="{{ r.onBookmark }}" style="position:absolute;top:8px;right:8px;width:31px;height:31px;border-radius:50%;border:none;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="{{ r.heartFill }}" stroke="{{ r.heartStroke }}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
+                <div style="padding:9px 2px 0">
+                  <div style="font-weight:700;font-size:13.5px;color:#1B1714;line-height:1.25">{{ r.name }}</div>
+                  <div style="display:flex;align-items:center;gap:5px;margin-top:5px;font-size:11.5px;color:#968D87;font-weight:500"><svg width="12" height="12" viewBox="0 0 24 24" fill="#F2A93B"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg>{{ r.rating }} · {{ r.timeLabel }} · {{ r.cal }} cal</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- FILTER -->
+      <sc-if value="{{ isFilter }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Filter" style="position:absolute;inset:0;display:flex;flex-direction:column;background:#FAF7F5;animation:ffIn .28s ease;z-index:55">
+        <div style="padding:54px 22px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #F0EAE6">
+          <button onClick="{{ goResults }}" style="width:40px;height:40px;border-radius:12px;border:1px solid #ECE6E2;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+          <div style="font-family:'Poppins';font-weight:700;font-size:18px;color:#1B1714">Filters</div>
+          <button onClick="{{ resetFilters }}" style="border:none;background:none;color:#E03E2F;font-size:14.5px;font-weight:700;cursor:pointer">Reset</button>
+        </div>
+        <div class="ffscroll" style="flex:1;overflow-y:auto;padding:20px 22px">
+          <div style="font-weight:700;font-size:15px;color:#1B1714;margin-bottom:12px">Meal type</div>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:24px">
+            <sc-for list="{{ mealChips }}" as="c" hint-placeholder-count="7"><button onClick="{{ c.onToggle }}" style="{{ c.style }}">{{ c.label }}</button></sc-for>
+          </div>
+          <div style="font-weight:700;font-size:15px;color:#1B1714;margin-bottom:12px">Dietary preferences</div>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;margin-bottom:24px">
+            <sc-for list="{{ dietaryChips }}" as="c" hint-placeholder-count="14"><button onClick="{{ c.onToggle }}" style="{{ c.style }}">{{ c.label }}</button></sc-for>
+          </div>
+          <div style="font-weight:700;font-size:15px;color:#1B1714;margin-bottom:12px">Cooking time</div>
+          <div style="display:flex;flex-wrap:wrap;gap:9px">
+            <sc-for list="{{ timeChips }}" as="c" hint-placeholder-count="4"><button onClick="{{ c.onToggle }}" style="{{ c.style }}">{{ c.label }}</button></sc-for>
+          </div>
+        </div>
+        <div style="padding:14px 22px 30px;border-top:1px solid #F0EAE6;display:flex;gap:11px">
+          <button onClick="{{ resetFilters }}" style="flex:none;width:120px;height:54px;border-radius:16px;border:1.5px solid #ECE6E2;background:#fff;color:#1B1714;font-family:'Poppins',system-ui,sans-serif;font-size:15.5px;font-weight:700;cursor:pointer">Clear all</button>
+          <button onClick="{{ goResults }}" style="flex:1;height:54px;border:none;border-radius:16px;background:#E03E2F;color:#fff;font-family:'Poppins',system-ui,sans-serif;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 12px 26px -12px rgba(224,62,47,.7)">Show {{ filterCount }} recipes</button>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- BOOKMARKS -->
+      <sc-if value="{{ isBookmarks }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Bookmarks" class="ffscroll" style="position:absolute;inset:0;overflow-y:auto;animation:ffIn .34s ease">
+        <div style="padding:56px 22px 120px">
+          <h1 style="font-family:'Poppins';font-weight:700;font-size:27px;color:#1B1714;margin:0 0 4px;letter-spacing:-.5px">Saved recipes</h1>
+          <p style="color:#7C736D;font-size:14.5px;margin:0 0 16px">{{ savedCount }} recipes you've bookmarked</p>
+          <sc-if value="{{ hasBookmarks }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <sc-for list="{{ bookmarkRecipes }}" as="r" hint-placeholder-count="4">
+              <div onClick="{{ r.onOpen }}" style="cursor:pointer">
+                <div style="position:relative;border-radius:18px;overflow:hidden;aspect-ratio:1/1;background:#F0EAE6">
+                  <image-slot id="{{ r.slot }}" shape="rect" placeholder="Drop photo" style="position:absolute;inset:0;width:100%;height:100%"></image-slot>
+                  <button onClick="{{ r.onBookmark }}" style="position:absolute;top:8px;right:8px;width:31px;height:31px;border-radius:50%;border:none;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="15" height="15" viewBox="0 0 24 24" fill="{{ r.heartFill }}" stroke="{{ r.heartStroke }}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></button>
+                </div>
+                <div style="padding:9px 2px 0">
+                  <div style="font-weight:700;font-size:13.5px;color:#1B1714;line-height:1.25">{{ r.name }}</div>
+                  <div style="display:flex;align-items:center;gap:5px;margin-top:5px;font-size:11.5px;color:#968D87;font-weight:500"><svg width="12" height="12" viewBox="0 0 24 24" fill="#F2A93B"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg>{{ r.rating }} · {{ r.timeLabel }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          </sc-if>
+          <sc-if value="{{ noBookmarks }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:70px 20px">
+            <div style="width:72px;height:72px;border-radius:50%;background:#FCEBE8;display:flex;align-items:center;justify-content:center;margin:0 auto 16px"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg></div>
+            <div style="font-weight:700;font-size:17px;color:#1B1714">No saved recipes yet</div>
+            <div style="color:#8A817B;font-size:14px;margin:6px 0 18px">Tap the bookmark on any recipe to save it here.</div>
+            <button onClick="{{ goHome }}" style="height:48px;padding:0 24px;border:none;border-radius:14px;background:#E03E2F;color:#fff;font-weight:700;font-size:15px;cursor:pointer">Browse recipes</button>
+          </div>
+          </sc-if>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- PROFILE -->
+      <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ true }}">
+      <div data-screen-label="Profile" class="ffscroll" style="position:absolute;inset:0;overflow-y:auto;animation:ffIn .34s ease">
+        <div style="padding:56px 22px 120px">
+          <div style="display:flex;align-items:center;justify-content:space-between">
+            <h1 style="font-family:'Poppins';font-weight:700;font-size:27px;color:#1B1714;margin:0;letter-spacing:-.5px">Profile</h1>
+            <button style="width:40px;height:40px;border-radius:13px;border:1px solid #ECE6E2;background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></button>
+          </div>
+          <div style="display:flex;align-items:center;gap:15px;margin-top:20px">
+            <div style="width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,#FBD9D1,#F2A93B);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:26px;font-family:'Poppins'">J</div>
+            <div>
+              <div style="font-family:'Poppins';font-weight:700;font-size:21px;color:#1B1714">Jordan Lee</div>
+              <div style="color:#8A817B;font-size:14px">@jordancooks</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:20px">
+            <div style="flex:1;background:#fff;border:1px solid #F0EAE6;border-radius:16px;padding:14px;text-align:center"><div style="font-family:'Poppins';font-weight:800;font-size:22px;color:#1B1714">{{ savedCount }}</div><div style="font-size:12px;color:#8A817B">Saved</div></div>
+            <div style="flex:1;background:#fff;border:1px solid #F0EAE6;border-radius:16px;padding:14px;text-align:center"><div style="font-family:'Poppins';font-weight:800;font-size:22px;color:#1B1714">12</div><div style="font-size:12px;color:#8A817B">Cooked</div></div>
+            <div style="flex:1;background:#fff;border:1px solid #F0EAE6;border-radius:16px;padding:14px;text-align:center"><div style="font-family:'Poppins';font-weight:800;font-size:22px;color:#1B1714">3</div><div style="font-size:12px;color:#8A817B">Reviews</div></div>
+          </div>
+
+          <div style="font-weight:700;font-size:14px;color:#1B1714;margin:24px 0 10px">Your preferences</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px">
+            <span style="background:#FCEBE8;color:#C42A1A;border-radius:20px;padding:7px 13px;font-size:12.5px;font-weight:600">🥗 Mediterranean</span>
+            <span style="background:#FCEBE8;color:#C42A1A;border-radius:20px;padding:7px 13px;font-size:12.5px;font-weight:600">🚫 Peanuts</span>
+            <span style="background:#FCEBE8;color:#C42A1A;border-radius:20px;padding:7px 13px;font-size:12.5px;font-weight:600">👎 Cilantro</span>
+            <span onClick="{{ goDiet }}" style="background:#fff;border:1px solid #ECE6E2;color:#6E655F;border-radius:20px;padding:7px 13px;font-size:12.5px;font-weight:600;cursor:pointer">Edit</span>
+          </div>
+
+          <div style="background:#fff;border:1px solid #F0EAE6;border-radius:18px;overflow:hidden;margin-top:14px">
+            <div style="display:flex;align-items:center;gap:13px;padding:15px 16px;border-bottom:1px solid #F4EEEA;cursor:pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span style="flex:1;font-size:15px;color:#1B1714;font-weight:500">My shopping list</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C4BBB4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
+            <div style="display:flex;align-items:center;gap:13px;padding:15px 16px;border-bottom:1px solid #F4EEEA;cursor:pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9a6 6 0 0 0 12 0V3H6Z"/><path d="M9 21h6M12 15v6"/></svg><span style="flex:1;font-size:15px;color:#1B1714;font-weight:500">Eating goals</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C4BBB4" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></div>
+            <div onClick="{{ goSplash }}" style="display:flex;align-items:center;gap:13px;padding:15px 16px;cursor:pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E03E2F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg><span style="flex:1;font-size:15px;color:#1B1714;font-weight:500">Log out</span></div>
+          </div>
+        </div>
+      </div>
+      </sc-if>
+
+      <!-- BOTTOM NAV -->
+      <sc-if value="{{ showNav }}" hint-placeholder-val="{{ false }}">
+      <div style="position:absolute;left:0;right:0;bottom:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-top:1px solid #F0EAE6;padding:9px 26px 26px;display:flex;justify-content:space-between;align-items:center">
+        <button onClick="{{ goHome }}" style="background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;width:54px"><svg width="23" height="23" viewBox="0 0 24 24" fill="{{ navHomeFill }}" stroke="{{ navHomeColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5M5 9.5V21h14V9.5"/></svg><span style="font-size:10.5px;font-weight:600;color:{{ navHomeColor }}">Home</span></button>
+        <button onClick="{{ goDiscover }}" style="background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;width:54px"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="{{ navSearchColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span style="font-size:10.5px;font-weight:600;color:{{ navSearchColor }}">Search</span></button>
+        <button onClick="{{ goBookmarks }}" style="background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;width:54px"><svg width="23" height="23" viewBox="0 0 24 24" fill="{{ navSaveFill }}" stroke="{{ navSaveColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21l-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg><span style="font-size:10.5px;font-weight:600;color:{{ navSaveColor }}">Saved</span></button>
+        <button onClick="{{ goProfile }}" style="background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;width:54px"><svg width="23" height="23" viewBox="0 0 24 24" fill="{{ navProfFill }}" stroke="{{ navProfColor }}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span style="font-size:10.5px;font-weight:600;color:{{ navProfColor }}">Profile</span></button>
+      </div>
+      </sc-if>
+
+      <!-- home indicator -->
+      <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:8px;width:134px;height:5px;border-radius:3px;background:{{ homeIndicator }};z-index:70;pointer-events:none"></div>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    screen: 'splash',
+    form: { firstName: '', lastName: '', username: '', email: '', password: '', news: true },
+    diet: ['Mediterranean'],
+    allergies: ['Peanuts'],
+    dislikes: ['Cilantro'],
+    kitchen: [],
+    feedTab: 'Trending',
+    detailTab: 'Ingredients',
+    currentId: 'shrimp',
+    servings: 2,
+    checked: {},
+    bookmarks: { turkey: true, salmon: true, bulgogi: true },
+    filter: { Lunch: true, 'Under 45 min': true },
+  };
+
+  recipes = {
+    shrimp:   { id:'shrimp',   name:'Zesty Shrimp Linguine',     time:35, cal:520, difficulty:'Easy',   rating:4.8, reviews:128, slot:'r-shrimp',   desc:"Garlicky, buttery shrimp tossed with fresh lemon and a whisper of chili over silky linguine. Weeknight-fast, dinner-party good." },
+    bulgogi:  { id:'bulgogi',  name:'Korean Bulgogi Beef Bowl',  time:25, cal:610, difficulty:'Medium', rating:4.9, reviews:309, slot:'r-bulgogi',  desc:"Sweet-savory marinated beef seared hot and piled over rice with quick-pickled veg and a soft egg." },
+    turkey:   { id:'turkey',   name:'Curry Turkey Burgers',      time:45, cal:450, difficulty:'Easy',   rating:4.3, reviews:96,  slot:'r-turkey',   desc:"Juicy turkey patties warmed with curry spice, stacked with a crunchy slaw and a cool yogurt sauce." },
+    salmon:   { id:'salmon',   name:'Honey Garlic Glazed Salmon',time:30, cal:480, difficulty:'Easy',   rating:4.8, reviews:211, slot:'r-salmon',   desc:"Pan-seared salmon lacquered in a sticky honey-garlic glaze that caramelizes in minutes." },
+    jerk:     { id:'jerk',     name:'Smoky Jerk Chicken',        time:50, cal:600, difficulty:'Medium', rating:4.7, reviews:174, slot:'r-jerk',     desc:"Boldly marinated chicken with charred edges and deep, smoky island heat." },
+    lemonchk: { id:'lemonchk', name:'Grilled Lemon Chicken',     time:40, cal:430, difficulty:'Easy',   rating:4.6, reviews:88,  slot:'r-lemonchk', desc:"Bright lemon-herb chicken grilled alongside charred zucchini. Light and endlessly repeatable." },
+    scampi:   { id:'scampi',   name:'Classic Shrimp Scampi',     time:25, cal:500, difficulty:'Easy',   rating:4.5, reviews:64,  slot:'r-scampi',   desc:"The classic: shrimp swimming in garlic, butter, white wine and lemon. Bread for mopping required." },
+    eggbowl:  { id:'eggbowl',  name:'Sesame Greens Egg Bowl',    time:15, cal:380, difficulty:'Easy',   rating:5.0, reviews:42,  slot:'r-eggbowl',  desc:"A 15-minute veggie-and-egg rice bowl with toasted sesame and a soy-maple drizzle." },
+  };
+
+  ingredients = ['1 lb large shrimp, peeled & deveined','12 oz linguine pasta','3 tbsp olive oil','4 cloves garlic, minced','1 lemon, juiced & zested','½ tsp chili flakes','3 tbsp butter','¼ cup parsley, chopped'];
+  steps = ['Bring a large pot of salted water to a boil and cook linguine until al dente. Reserve a cup of pasta water.','Pat the shrimp dry and season with salt and pepper.','Heat olive oil and butter over medium; sauté garlic until fragrant, about 1 minute.','Add shrimp and cook 2–3 minutes per side until pink and just opaque.','Stir in lemon juice, zest, and chili flakes.','Toss the pasta in with a splash of reserved pasta water until glossy.','Finish with parsley and an extra squeeze of lemon. Serve hot.'];
+  reviews = [
+    { user:'Dawson', when:'10h', rating:5, text:'Really good recipe — made it twice already this week.', bg:'#E0796B', initial:'D' },
+    { user:'Kelly_01', when:'9d', rating:5, text:'So goooddd! Added extra chili and it was perfect.', bg:'#6B86E0', initial:'K' },
+    { user:'Pasta King', when:'18d', rating:4, text:'Top 10 meal preps for me. Doubled the garlic.', bg:'#5BA36B', initial:'P' },
+  ];
+  nutrition = [['Protein','38 g'],['Carbohydrates','63 g'],['Fiber','5 g'],['Sugars','6 g'],['Fat','27 g'],['Saturated fat','9 g']];
+
+  dietOpts = ['No restrictions','Vegetarian','Vegan','Pescatarian','Keto','Paleo','Mediterranean','Low-carb','Gluten-free','Dairy-free','High-protein','Whole30'];
+  allergyOpts = ['Peanuts','Tree nuts','Milk','Eggs','Shellfish','Fish','Soy','Wheat','Sesame','Mustard'];
+  dislikeOpts = ['Cilantro','Mushrooms','Olives','Liver','Okra','Blue cheese','Anchovies','Tofu','Beets','Capers'];
+  kitchenOpts = ['Chicken','Eggs','Rice','Garlic','Tomatoes','Spinach','Pasta','Lemon'];
+  mealOpts = ['Breakfast','Lunch','Dinner','Snacks','Drinks','Baked goods','Sides'];
+  dietaryOpts = ['Vegetarian','Vegan','Pescatarian','Plant-based','Gluten-free','Dairy-free','Nut-free','Soy-free','Keto','Paleo','Low-carb','Low-sugar','Halal','Kosher'];
+  timeOpts = ['Under 15 min','Under 30 min','Under 45 min','Under 60 min','1+ day'];
+
+  go(screen) {
+    this.setState({ screen });
+    const el = this.root && this.root.querySelector ? null : null;
+  }
+
+  openRecipe(id) { this.setState({ screen: 'detail', currentId: id, detailTab: 'Ingredients', checked: {} }); }
+
+  toggleList(key, val) {
+    const arr = (this.state[key] || []).slice();
+    const i = arr.indexOf(val);
+    if (i >= 0) arr.splice(i, 1); else arr.push(val);
+    this.setState({ [key]: arr });
+  }
+
+  toggleBookmark(id) {
+    const b = Object.assign({}, this.state.bookmarks);
+    if (b[id]) delete b[id]; else b[id] = true;
+    this.setState({ bookmarks: b });
+  }
+
+  toggleFilter(val) {
+    const f = Object.assign({}, this.state.filter);
+    if (f[val]) delete f[val]; else f[val] = true;
+    this.setState({ filter: f });
+  }
+
+  chipStyle(selected) {
+    return selected
+      ? { padding:'10px 16px', borderRadius:'999px', border:'1.5px solid #E03E2F', background:'#E03E2F', color:'#fff', fontFamily:"'Poppins',system-ui,sans-serif", fontSize:'13.5px', fontWeight:600, cursor:'pointer', whiteSpace:'nowrap', transition:'all .15s' }
+      : { padding:'10px 16px', borderRadius:'999px', border:'1.5px solid #ECE6E2', background:'#fff', color:'#514A45', fontFamily:"'Poppins',system-ui,sans-serif", fontSize:'13.5px', fontWeight:600, cursor:'pointer', whiteSpace:'nowrap', transition:'all .15s' };
+  }
+
+  tabPill(active) {
+    return active
+      ? { flex:'1', padding:'9px 0', borderRadius:'10px', border:'none', background:'#fff', color:'#1B1714', fontFamily:"'Poppins',system-ui,sans-serif", fontSize:'13px', fontWeight:700, cursor:'pointer', boxShadow:'0 1px 4px rgba(60,30,20,.12)' }
+      : { flex:'1', padding:'9px 0', borderRadius:'10px', border:'none', background:'transparent', color:'#8A817B', fontFamily:"'Poppins',system-ui,sans-serif", fontSize:'13px', fontWeight:600, cursor:'pointer' };
+  }
+
+  feedTabStyle(active) {
+    return active
+      ? { padding:'8px 16px', borderRadius:'999px', border:'none', background:'#1B1714', color:'#fff', fontFamily:"'Poppins',system-ui,sans-serif", fontSize:'13px', fontWeight:600, cursor:'pointer', whiteSpace:'nowrap' }
+      : { padding:'8px 16px', borderRadius:'999px', border:'1px solid #ECE6E2', background:'#fff', color:'#6E655F', fontFamily:"'Poppins',system-ui,sans-serif", fontSize:'13px', fontWeight:600, cursor:'pointer', whiteSpace:'nowrap' };
+  }
+
+  cardData(id) {
+    const r = this.recipes[id];
+    const bm = !!this.state.bookmarks[id];
+    return Object.assign({}, r, {
+      timeLabel: r.time + ' min',
+      heartFill: bm ? '#E03E2F' : 'none',
+      heartStroke: bm ? '#E03E2F' : '#1B1714',
+      onOpen: () => this.openRecipe(id),
+      onBookmark: (e) => { if (e) e.stopPropagation(); this.toggleBookmark(id); },
+    });
+  }
+
+  starSvg(n) {
+    let s = '';
+    for (let i = 0; i < 5; i++) {
+      const fill = i < n ? '#F2A93B' : '#E8DDD3';
+      s += '<svg width="12" height="12" viewBox="0 0 24 24" fill="' + fill + '"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"/></svg>';
+    }
+    return React.createElement('span', { style: { display:'flex', gap:'1px' }, dangerouslySetInnerHTML: { __html: s } });
+  }
+
+  renderVals() {
+    const s = this.state;
+    const scr = s.screen;
+    const navScreens = ['home','discover','results','bookmarks','profile'];
+    const mk = (id) => this.cardData(id);
+
+    const feedIds = ['turkey','salmon','jerk','lemonchk','scampi','eggbowl'];
+    const discoverIds = ['bulgogi','jerk','salmon','eggbowl'];
+    const resultIds = ['turkey','turkey','turkey','turkey','turkey','turkey'];
+    const bookmarkIds = Object.keys(s.bookmarks);
+
+    const recipe = mk(s.currentId);
+
+    const navColor = (active) => active ? '#E03E2F' : '#A89F98';
+    const navFill = (active) => active ? '#FCEBE8' : 'none';
+    const onSearch = (scr === 'discover' || scr === 'results');
+
+    // results uses duplicate turkey ids — give each a unique slot/key by index
+    const resultsRecipes = resultIds.map((id, idx) => {
+      const c = mk(id);
+      return Object.assign({}, c, { slot: 'r-turkey' });
+    });
+
+    return {
+      // screen flags
+      isSplash: scr==='splash', isSignup: scr==='signup', isIntro: scr==='intro',
+      isDiet: scr==='diet', isAllergies: scr==='allergies', isDislikes: scr==='dislikes',
+      isHome: scr==='home', isDetail: scr==='detail', isDiscover: scr==='discover',
+      isResults: scr==='results', isFilter: scr==='filter', isBookmarks: scr==='bookmarks',
+      isProfile: scr==='profile',
+      showNav: navScreens.indexOf(scr) >= 0,
+      statusColor: (scr==='splash') ? '#fff' : (scr==='detail' ? '#fff' : '#1B1714'),
+      homeIndicator: (scr==='splash') ? 'rgba(255,255,255,.7)' : '#1B1714',
+
+      // nav
+      goSplash: () => this.go('splash'),
+      goSignup: () => this.go('signup'),
+      goIntro: () => this.go('intro'),
+      goDiet: () => this.go('diet'),
+      goAllergies: () => this.go('allergies'),
+      goDislikes: () => this.go('dislikes'),
+      goHome: () => this.go('home'),
+      goDiscover: () => this.go('discover'),
+      goResults: () => this.go('results'),
+      goFilter: () => this.go('filter'),
+      goBookmarks: () => this.go('bookmarks'),
+      goProfile: () => this.go('profile'),
+      noop: (e) => { if (e) e.stopPropagation(); },
+
+      navHomeColor: navColor(scr==='home'), navHomeFill: navFill(scr==='home'),
+      navSearchColor: navColor(onSearch), navSaveColor: navColor(scr==='bookmarks'),
+      navSaveFill: navFill(scr==='bookmarks'), navProfColor: navColor(scr==='profile'),
+      navProfFill: navFill(scr==='profile'),
+
+      // signup form
+      form: s.form,
+      onFirstName: (e) => this.setState({ form: Object.assign({}, s.form, { firstName: e.target.value }) }),
+      onLastName: (e) => this.setState({ form: Object.assign({}, s.form, { lastName: e.target.value }) }),
+      onUsername: (e) => this.setState({ form: Object.assign({}, s.form, { username: e.target.value }) }),
+      onEmail: (e) => this.setState({ form: Object.assign({}, s.form, { email: e.target.value }) }),
+      onPassword: (e) => this.setState({ form: Object.assign({}, s.form, { password: e.target.value }) }),
+      toggleNews: () => this.setState({ form: Object.assign({}, s.form, { news: !s.form.news }) }),
+      newsBg: s.form.news ? '#E03E2F' : '#fff',
+      newsBorder: s.form.news ? '#E03E2F' : '#D8D0CA',
+      newsCheck: s.form.news ? 1 : 0,
+      signupBtnBg: '#E03E2F',
+      submitSignup: () => this.go('intro'),
+
+      // chips
+      dietChips: this.dietOpts.map(o => ({ label:o, onToggle:()=>this.toggleList('diet',o), style:this.chipStyle(s.diet.indexOf(o)>=0) })),
+      allergyChips: this.allergyOpts.map(o => ({ label:o, onToggle:()=>this.toggleList('allergies',o), style:this.chipStyle(s.allergies.indexOf(o)>=0) })),
+      dislikeChips: this.dislikeOpts.map(o => ({ label:o, onToggle:()=>this.toggleList('dislikes',o), style:this.chipStyle(s.dislikes.indexOf(o)>=0) })),
+      ingredientChips: this.kitchenOpts.map(o => ({ label:o, onToggle:()=>this.toggleList('kitchen',o), style:this.chipStyle(s.kitchen.indexOf(o)>=0) })),
+      mealChips: this.mealOpts.map(o => ({ label:o, onToggle:()=>this.toggleFilter(o), style:this.chipStyle(!!s.filter[o]) })),
+      dietaryChips: this.dietaryOpts.map(o => ({ label:o, onToggle:()=>this.toggleFilter(o), style:this.chipStyle(!!s.filter[o]) })),
+      timeChips: this.timeOpts.map(o => ({ label:o, onToggle:()=>this.toggleFilter(o), style:this.chipStyle(!!s.filter[o]) })),
+      filterCount: 45,
+      resetFilters: () => this.setState({ filter: {} }),
+
+      // feed
+      feedTabs: ['Trending','For you','Quick & easy','Healthy'].map(t => ({ label:t, onClick:()=>this.setState({feedTab:t}), style:this.feedTabStyle(s.feedTab===t) })),
+      heroOpen: () => this.openRecipe('shrimp'),
+      heroBookmark: (e) => { if(e) e.stopPropagation(); this.toggleBookmark('shrimp'); },
+      heroHeartFill: s.bookmarks['shrimp'] ? '#E03E2F' : 'none',
+      heroHeartStroke: s.bookmarks['shrimp'] ? '#E03E2F' : '#1B1714',
+      feedRecipes: feedIds.map(mk),
+      discoverRecipes: discoverIds.map(mk),
+      resultsRecipes,
+      bookmarkRecipes: bookmarkIds.map(mk),
+      savedCount: bookmarkIds.length,
+      hasBookmarks: bookmarkIds.length > 0,
+      noBookmarks: bookmarkIds.length === 0,
+
+      // detail
+      recipe,
+      detailBack: () => this.go('home'),
+      detailBookmark: (e) => { if(e) e.stopPropagation(); this.toggleBookmark(s.currentId); },
+      detailTabs: ['Ingredients','Steps','Reviews','Nutrition'].map(t => ({ label:t, onClick:()=>this.setState({detailTab:t}), style:this.tabPill(s.detailTab===t) })),
+      tabIngredients: s.detailTab==='Ingredients',
+      tabSteps: s.detailTab==='Steps',
+      tabReviews: s.detailTab==='Reviews',
+      tabNutrition: s.detailTab==='Nutrition',
+      servings: s.servings,
+      servingsUp: () => this.setState({ servings: Math.min(12, s.servings+1) }),
+      servingsDown: () => this.setState({ servings: Math.max(1, s.servings-1) }),
+      ingredientRows: this.ingredients.map((text, idx) => {
+        const ck = !!s.checked[idx];
+        return { text, onToggle: ()=>{ const c=Object.assign({},s.checked); c[idx]=!c[idx]; this.setState({checked:c}); },
+          boxBg: ck?'#E03E2F':'#fff', boxBorder: ck?'#E03E2F':'#D8D0CA', checkOpacity: ck?1:0,
+          textColor: ck?'#A89F98':'#3A332E', strike: ck?'line-through':'none' };
+      }),
+      stepCount: this.steps.length,
+      stepRows: this.steps.map((text, i) => ({ n: i+1, text })),
+      reviewRows: this.reviews.map(rv => ({ user:rv.user, when:rv.when, text:rv.text, initial:rv.initial, avatarBg:rv.bg, stars: this.starSvg(rv.rating) })),
+      nutritionRows: this.nutrition.map(n => ({ label:n[0], value:n[1] })),
+    };
+  }
+}
+</script>
+</body>
+</html>
