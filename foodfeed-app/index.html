@@ -266,9 +266,8 @@
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><span onclick="{{ goDiet }}" style="display:flex;align-items:center;gap:7px;font-family:-apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif;font-size:15px;font-weight:400;color:#7C736D;cursor:pointer"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#7C736D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="m12 19-7-7 7-7"></path></svg>Back</span><span onclick="{{ goDislikes }}" style="font-family:-apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif;font-size:15px;font-weight:400;color:#7C736D;cursor:pointer">Skip</span></div>
           <div style="font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;color:#C1131F;text-align:center;margin-bottom:11px">Step 2 of 3</div>
           <div style="display:flex;align-items:center;padding:0 26px;margin-bottom:20px"><div style="width:13px;height:13px;border-radius:50%;background:#C1131F;flex:none"></div><div style="flex:1;height:3px;background:#C1131F"></div><div style="width:13px;height:13px;border-radius:50%;background:#C1131F;flex:none"></div><div style="flex:1;height:3px;background:#EDE7E3"></div><div style="width:13px;height:13px;border-radius:50%;background:#fff;border:2px solid #E0D9D4;box-sizing:border-box;flex:none"></div></div>
-          <h1 style="font-family:'Poppins';font-weight:700;font-size:27px;color:#1B1714;margin:0 0 16px;letter-spacing:-.5px;text-align:center">What are your food allergies?</h1>
+          <h1 style="font-family:'Poppins';font-weight:700;font-size:27px;color:#1B1714;margin:0 0 16px;letter-spacing:-.5px;text-align:center">Any food allergies?</h1>
           <div style="position:relative;z-index:30;margin-bottom:18px">
-            <div style="display:flex;align-items:center;gap:6px;margin:0 4px 7px;font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;font-size:12.5px;font-weight:700;letter-spacing:.2px;color:#C1131F"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C1131F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="12" cy="12" r="9"></circle><path d="m5.6 5.6 12.8 12.8"></path></svg>Ingredients you can’t eat</div>
             <div style="display:flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #ECE6E2;border-radius:24px;padding:5px 16px;box-shadow:0 12px 28px -20px rgba(60,30,20,.6)">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9A918B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
               <input value="{{ allergyPicker.query }}" oninput="{{ allergyPicker.onQuery }}" placeholder="{{ allergyPicker.placeholder }}" style="flex:1;min-width:0;height:38px;border:none;outline:none;background:transparent;font-size:15px;font-family:-apple-system, 'SF Pro Text', system-ui, sans-serif;color:#1B1714">
@@ -303,8 +302,8 @@
               </sc-for>
             </sc-if>
             <sc-if value="{{ noExtraAllergies }}" hint-placeholder-val="{{ false }}">
-              <div style="margin:auto;text-align:center;padding:6px 4px">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#C2C2C2" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom:7px"><circle cx="12" cy="12" r="9"></circle><path d="m5.6 5.6 12.8 12.8"></path></svg>
+              <div style="margin:auto;display:flex;align-items:center;justify-content:center;gap:8px;padding:6px 4px">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C1131F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:none"><circle cx="12" cy="12" r="9"></circle><path d="m5.6 5.6 12.8 12.8"></path></svg>
                 <div style="font-family:-apple-system,'SF Pro Text',system-ui,sans-serif;font-size:13.5px;line-height:1.5;color:#999999">Ingredients you add will show up here.</div>
               </div>
             </sc-if>
@@ -1189,7 +1188,7 @@ class Component extends DCLogic {
   // One packed string per category, entries split on "|":
   //   Name[=emoji][~synonym;synonym][#tags]   tags: P high-protein, F fresh, S pantry
   ingredientPack = [
-    /* Meat & Poultry */ 'Chicken breast=🍗~chicken#P|Chicken thighs=🍗#P|Chicken wings=🍗#P|Chicken drumsticks=🍗#P|Whole chicken=🍗#P|Ground chicken=🍗~minced chicken#P|Chicken tenders=🍗~chicken tenderloins;goujons#P|Turkey breast=🦃#P|Ground turkey=🦃~minced turkey#P|Turkey sausage=🦃#P|Turkey bacon=🦃#P|Duck breast=🦆|Duck legs=🦆|Ground beef~mince;minced beef;hamburger meat;hamburger#P|Beef chuck~chuck roast;chuck#P|Beef brisket~brisket#P|Beef short ribs#P|Beef sirloin~sirloin#P|Beef tenderloin~filet mignon;tenderloin#P|Ribeye steak~rib eye;ribeye;delmonico|Strip steak~new york strip;ny strip|Flank steak~flank;skirt steak|Ground pork~minced pork#P|Pork chops#P|Pork loin#P|Pork shoulder~boston butt;pork butt#P|Pork belly=🥓#P|Pork tenderloin#P|Ham=🥓|Bacon=🥓|Italian sausage=🌭~sweet sausage;hot sausage|Breakfast sausage=🌭|Chorizo=🌭|Lamb chops=🐑#P|Ground lamb=🐑~minced lamb#P|Lamb shoulder=🐑#P|Veal=🐑#P|Venison=🐑~deer meat#P',
+    /* Meat & Poultry */ 'Chicken breast=🍗~chicken#P|Chicken thighs=🍗#P|Chicken wings=🍗#P|Chicken drumsticks=🍗#P|Whole chicken=🍗#P|Ground chicken=🍗~minced chicken#P|Chicken tenders=🍗~chicken tenderloins;goujons#P|Turkey breast=🦃#P|Ground turkey=🦃~minced turkey#P|Turkey sausage=🦃#P|Turkey bacon=🦃#P|Duck breast=🦆|Duck legs=🦆|Ground beef~mince;minced beef;hamburger meat#P|Beef chuck~chuck roast;chuck#P|Beef brisket~brisket#P|Beef short ribs#P|Beef sirloin~sirloin#P|Beef tenderloin~filet mignon;tenderloin#P|Ribeye steak~rib eye;ribeye;delmonico|Strip steak~new york strip;ny strip|Flank steak~flank;skirt steak|Ground pork~minced pork#P|Pork chops#P|Pork loin#P|Pork shoulder~boston butt;pork butt#P|Pork belly=🥓#P|Pork tenderloin#P|Ham=🥓|Bacon=🥓|Italian sausage=🌭~sweet sausage;hot sausage|Breakfast sausage=🌭|Chorizo=🌭|Lamb chops=🐑#P|Ground lamb=🐑~minced lamb#P|Lamb shoulder=🐑#P|Veal=🐑#P|Venison=🐑~deer meat#P',
     /* Seafood */ 'Salmon#P|Tuna#P|Cod#P|Haddock|Tilapia|Mahi-mahi~mahi mahi;dorado;dolphinfish|Halibut|Trout|Sea bass~branzino|Swordfish|Sardines|Anchovies~anchovy fillets|Shrimp=🍤~prawns#P|Jumbo shrimp=🍤~large shrimp;king prawns#P|Crawfish=🦀~crayfish;crawdads|Crab=🦀#P|Lobster=🦞#P|Scallops=🦚#P|Mussels=🦚|Clams=🦚|Oysters=🦚|Calamari=🐙~squid|Octopus=🐙|Smoked salmon~lox;gravlax#P|Canned tuna=🥫~tinned tuna#P|Canned salmon=🥫#P',
     /* Vegetables */ 'Spinach#F|Kale#F|Collard greens=🧴~collards#F|Swiss chard~chard;silverbeet#F|Arugula~rocket#F|Romaine lettuce~cos lettuce;romaine;lettuce#F|Iceberg lettuce~iceberg;lettuce#F|Green cabbage#F|Red cabbage#F|Napa cabbage~chinese cabbage;wombok#F|Broccoli=🥦#F|Broccolini=🥦~baby broccoli;tenderstem#F|Cauliflower=🥦#F|Brussels sprouts=🥦#F|Asparagus#F|Green beans=🫘~string beans;haricots verts#F|Snow peas=🫘~mangetout#F|Sugar snap peas=🫘~snap peas#F|Peas=🫘#F|Carrots=🥕#F|Baby carrots=🥕#F|Celery#F|Cucumber=🥒#F|Zucchini=🥒~courgette#F|Yellow squash=🎃#F|Eggplant=🍆~aubergine#F|Bell pepper=🫑~capsicum;sweet pepper;peppers#F|Jalapeño=🌶️~jalapeno;jalapenos#F|Serrano pepper=🌶️#F|Poblano pepper=🌶️#F|Habanero=🌶️~scotch bonnet#F|Banana pepper=🫑#F|Cherry tomatoes=🍅~grape tomatoes#F|Roma tomatoes=🍅#F|Beefsteak tomatoes=🥩#F|Sun-dried tomatoes=🍅~sundried tomatoes#F|Corn=🌽#F|Sweet potato=🥔~yam;kumara#F|Russet potato=🥔~baking potato;idaho potato;potatoes#F|Yukon Gold potato=🥔~yellow potato;potatoes#F|Red potato=🥔~potatoes#F|Fingerling potatoes=🥔#F|Pumpkin=🎃#F|Butternut squash=🎃~butternut pumpkin#F|Acorn squash=🌽#F|Spaghetti squash=🎃#F|Radishes=🥕~radish#F|Beets=🥕~beetroot#F|Turnips=🥕#F|Rutabaga=🥕~swede#F|Parsnips=🥕#F|Artichokes#F|Leeks=🧅#F|Fennel#F|Okra~ladies fingers#F|Bok choy~pak choi;pak choy#F|Watercress#F|Mushrooms=🍄#F|Portobello mushrooms=🍄~portabella;portobello#F|Shiitake mushrooms=🍄#F|Oyster mushrooms=🦚#F|Cremini mushrooms=🍄~baby bella;chestnut mushrooms#F|Enoki mushrooms=🍄#F',
     /* Aromatics */ 'Yellow onion=🧅~onion;onions;brown onion|White onion=🧅~onion;onions|Red onion=🧅~onion;onions|Sweet onion=🧅~vidalia;onion|Shallots=🧅|Garlic|Green onions=🧅~scallions;spring onions|Chives=🧅|Ginger=🫚|Lemongrass=🍋~lemon grass|Scallions=🧅~green onions;spring onions|Fresh turmeric=🫚~turmeric root',
@@ -1905,10 +1904,10 @@ class Component extends DCLogic {
     const selected = s[listKey] || [];
     const raw = s[listKey + 'Query'] || '';
     const q = raw.trim();
-    const qn = q.toLowerCase();
+    const qf = this.ffold(q);
 
     const entries = this.foodIndexFor(listKey, fullList);
-    const suggestions = (qn ? this.foodSearch(entries, this.ffold(q), 40, selected) : []).map(e => ({
+    const suggestions = this.foodSearch(entries, qf, 40, selected).map(e => ({
       label: e.name,
       emoji: e.emoji || '\u{1F944}',
       cat: e.cat,
@@ -1922,20 +1921,22 @@ class Component extends DCLogic {
       onPick: () => this.addFood(listKey, e.name),
     }));
 
-    const qf = this.ffold(q);
-    const exact = !!qf && (entries.some(e => e.fold === qf) || selected.some(o => this.ffold(o) === qf));
+    // "Add \u201Caubergine\u201D" would bury a duplicate of Eggplant in the list, so a
+    // synonym counts as an exact hit too — the suggestion above it is the real one.
+    const exact = !!qf && (selected.some(o => this.ffold(o) === qf)
+      || entries.some(e => e.fold === qf || e.synFold.indexOf(qf) >= 0));
     const canAdd = q.length > 0 && !exact;
 
     return {
       query: raw,
       onQuery: (e) => this.setState({ [listKey + 'Query']: e.target.value }),
       placeholder,
-      showMenu: qn.length > 0,
+      showMenu: qf.length > 0,
       suggestions,
       canAdd,
       addLabel: 'Add \u201C' + q + '\u201D',
       onAdd: () => this.addFood(listKey, q),
-      noMatches: qn.length > 0 && suggestions.length === 0 && !canAdd,
+      noMatches: qf.length > 0 && suggestions.length === 0 && !canAdd,
     };
   }
 

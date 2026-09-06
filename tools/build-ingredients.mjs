@@ -71,7 +71,7 @@ const EMOJI_RULES = [
 const SYNONYMS = {
   'Chicken breast': ['chicken'], 'Chicken tenders': ['chicken tenderloins', 'goujons'],
   'Ground chicken': ['minced chicken'], 'Ground turkey': ['minced turkey'],
-  'Ground beef': ['mince', 'minced beef', 'hamburger meat', 'hamburger'],
+  'Ground beef': ['mince', 'minced beef', 'hamburger meat'],
   'Beef chuck': ['chuck roast', 'chuck'], 'Beef brisket': ['brisket'],
   'Beef sirloin': ['sirloin'], 'Beef tenderloin': ['filet mignon', 'tenderloin'],
   'Ribeye steak': ['rib eye', 'ribeye', 'delmonico'], 'Strip steak': ['new york strip', 'ny strip'],
