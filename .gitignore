@@ -11,3 +11,6 @@
 # Source art too large for GitHub (100MB/file limit).
 # The deployed version is foodfeed-app/video/login-splash.mp4.
 images/Login in splash.gif
+
+# Second source gif, also outside the size we want in git
+foodfeedslash.gif
