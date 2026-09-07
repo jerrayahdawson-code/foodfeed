@@ -7,3 +7,7 @@
 
 # Archives
 *.zip
+
+# Source art too large for GitHub (100MB/file limit).
+# The deployed version is foodfeed-app/video/login-splash.mp4.
+images/Login in splash.gif
