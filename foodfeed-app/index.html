@@ -66,7 +66,7 @@
   .ffsearch{display:flex;align-items:center;gap:10px;background:#F0F2F5;border:none;border-radius:24px;padding:6px 17px}
   /* One transition for every screen: a short rise into place. 200ms on a
      decelerating curve reads as immediate but not abrupt — the same curve
-     ffTurn and ffRail already use, so page changes feel like the rest of
+     ffTurn and .ffrail already use, so page changes feel like the rest of
      the app. Motion is dropped entirely for anyone who asks for less. */
   @keyframes ffScreen{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   .ffscreen{animation:ffScreen .2s cubic-bezier(.22,.61,.36,1) both}
@@ -75,9 +75,14 @@
   }
   @keyframes ffFade{from{transform:translateY(4px)}to{transform:none}}
   @keyframes ffPop{from{transform:scale(.95)}to{transform:none}}
-  /* Profile menu rail: slides in from the right edge, scrim fades under it */
-  @keyframes ffRail{from{transform:translateX(100%)}to{transform:none}}
-  @keyframes ffScrim{from{opacity:0}to{opacity:1}}
+  /* Profile menu rail: slides in from the right edge and back out again, so
+     dismissing mirrors opening instead of vanishing. It stays mounted and
+     parked off-screen, which is what gives the exit something to animate. */
+  .ffrail{transition:transform .3s cubic-bezier(.22,.61,.36,1)}
+  .ffrailscrim{transition:opacity .24s ease}
+  @media (prefers-reduced-motion:reduce){
+    .ffrail,.ffrailscrim{transition:none}
+  }
   @keyframes ffStagger{from{transform:translateY(12px)}to{transform:none}}
   /* Sous "thinking" dots and the entrance each chat turn makes */
   @keyframes ffDot{0%,60%,100%{opacity:.25;transform:translateY(0)}30%{opacity:1;transform:translateY(-3px)}}
@@ -86,16 +91,298 @@
   .ffdot:nth-child(3){animation-delay:.3s}
   @keyframes ffTurn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
   .ffturn{animation:ffTurn .26s cubic-bezier(.22,.61,.36,1) both}
+  /* Component repo (dev rail only, never ships inside the phone). Its own
+     cr- namespace so nothing here can leak into a screen. */
+  .cr-sec{padding:20px 22px 24px;border-top:1px solid #E7E1DC}
+  .cr-tier{display:flex;align-items:center;gap:9px}
+  .cr-num{width:22px;height:22px;flex:none;border-radius:7px;background:#1B1714;color:#fff;font:700 11px/22px 'Poppins',sans-serif;text-align:center}
+  .cr-h{font:700 15px/22px 'Poppins',sans-serif;color:#1B1714;letter-spacing:-.2px}
+  .cr-def{font-size:11.5px;line-height:16px;color:#8A817B;margin:5px 0 16px 31px}
+  .cr-lab{font-size:9.5px;font-weight:700;color:#9A918B;letter-spacing:.7px;text-transform:uppercase;margin-bottom:8px}
+  .cr-card{background:#fff;border:1px solid #EAE4DF;border-radius:12px;padding:12px}
+  .cr-stage{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .cr-name{font-size:11.5px;font-weight:600;line-height:15px;color:#1B1714;margin-top:9px}
+  .cr-from{font-size:10px;line-height:14px;color:#9A918B}
+  .cr-from code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;color:#7C736D}
+  .cr-count{font-size:9.5px;font-weight:700;color:#1B1714;margin-top:4px}
+  .cr-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .cr-row{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+  .cr-sw{height:40px;border-radius:9px;border:1px solid rgba(27,23,20,.10)}
+  .cr-tok{font-size:10px;font-weight:600;color:#514A45;margin-top:5px}
+  .cr-hex{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;color:#9A918B}
+  .cr-tok2{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9px;color:#9A918B;flex:none;margin-left:10px}
+  .cr-type{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding-bottom:9px;margin-bottom:9px;border-bottom:1px solid #F1ECE8;overflow:hidden}
+  .cr-rad{width:50px;height:50px;background:#E4DDD7}
+  .cr-code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:9.5px;color:#514A45;background:#EFEAE6;border-radius:5px;padding:4px 7px}
+  .cr-ladder{display:flex;align-items:center;gap:5px;margin-top:11px}
+  .cr-step{flex:1;text-align:center;font-size:9.5px;font-weight:700;color:#514A45;background:#EDE7E2;border-radius:6px;padding:5px 0;white-space:nowrap}
+  .cr-arrow{color:#BEB5AE;font-size:11px;flex:none}
   button{font-family:-apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif;font-weight:700}
   image-slot{--x:0}
+  /* Export mode: "#screen=home&export=1" opens straight onto one screen and
+     strips the page chrome, so each screen can be captured on transparency.
+     !important is what lets these beat the wrapper's inline styles. */
+  html.ffexport,body.ffexport{background:transparent!important}
+  body.ffexport #devjump{display:none!important}
+  body.ffexport .ffpage{background:transparent!important;padding:0 3px!important;min-height:0!important}
 </style>
 </helmet>
-    <div id="devjump" style="position:fixed;top:0;left:0;bottom:0;z-index:99999;width:108px;display:flex;flex-direction:column;gap:4px;align-items:stretch;padding:10px 9px 16px;background:rgba(14,11,10,.94);backdrop-filter:blur(10px);font-family:'Poppins',sans-serif;overflow-y:auto"><span style="color:#A89F98;font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:2px 2px 4px">Jump to</span><sc-for list="{{ jumpGroups }}" as="g" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:4px"><span style="{{ g.titleStyle }}">{{ g.title }}</span><sc-for list="{{ g.items }}" as="b" hint-placeholder-count="4"><button onclick="{{ b.onGo }}" style="{{ b.style }}">{{ b.label }}</button></sc-for></div></sc-for></div>
-<div style="min-height:100vh;width:100%;display:flex;align-items:center;justify-content:center;background:#FFFFFF;font-family:-apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif;padding:40px 16px">
+    <div id="devjump" style="position:fixed;top:0;left:0;bottom:0;z-index:99999;width:108px;display:flex;flex-direction:column;gap:4px;align-items:stretch;padding:10px 9px 16px;background:rgba(14,11,10,.94);backdrop-filter:blur(10px);font-family:'Poppins',sans-serif;overflow-y:auto"><span style="color:#A89F98;font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;padding:2px 2px 4px">Design system</span><button onclick="{{ toggleComponents }}" style="{{ compToggleStyle }}">Components</button><span style="color:#6E655F;font-size:9.5px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;padding:10px 2px 3px">Jump to</span><sc-for list="{{ jumpGroups }}" as="g" hint-placeholder-count="3"><div style="display:flex;flex-direction:column;gap:4px"><span style="{{ g.titleStyle }}">{{ g.title }}</span><sc-for list="{{ g.items }}" as="b" hint-placeholder-count="4"><button onclick="{{ b.onGo }}" style="{{ b.style }}">{{ b.label }}</button></sc-for></div></sc-for></div>
 
-  <!-- iPhone 14 Pro Max — 430 x 932pt -->
-  <div style="width:430px;height:932px;background:#0E0B0A;border-radius:66px;padding:12px;position:relative;flex:none">
-    <div style="width:100%;height:100%;background:#FFFFFF;border-radius:54px;overflow:hidden;position:relative">
+    <!-- COMPONENT REPO — the atomic-design map, opened from the dev rail -->
+    <sc-if value="{{ showComponents }}" hint-placeholder-val="{{ true }}">
+    <div id="comprepo" class="ffscroll" style="position:fixed;top:0;left:108px;bottom:0;z-index:99998;width:436px;overflow-y:auto;background:#F7F5F3;border-right:1px solid #DED7D1;box-shadow:24px 0 60px -40px rgba(60,30,20,.55);font-family:-apple-system,'SF Pro Text','SF Pro Display',BlinkMacSystemFont,system-ui,sans-serif">
+
+      <!-- header + the ladder, so the five tiers are visible before you scroll -->
+      <div style="position:sticky;top:0;z-index:5;background:rgba(247,245,243,.96);backdrop-filter:blur(10px);border-bottom:1px solid #E7E1DC;padding:16px 22px 13px">
+        <div style="display:flex;align-items:flex-start;gap:10px">
+          <div style="flex:1;min-width:0">
+            <div style="font:700 17px/22px 'Poppins',sans-serif;color:#1B1714;letter-spacing:-.3px">Component repo</div>
+            <div style="font-size:11.5px;color:#8A817B;margin-top:2px">Foodfeed · atomic design · 5 tiers</div>
+          </div>
+          <button onclick="{{ closeComponents }}" aria-label="Close" style="flex:none;width:28px;height:28px;border-radius:50%;border:1px solid #DED7D1;background:#fff;color:#7C736D;font-size:15px;line-height:1;cursor:pointer;padding:0">×</button>
+        </div>
+        <div class="cr-ladder">
+          <span class="cr-step">Atoms</span><span class="cr-arrow">›</span>
+          <span class="cr-step">Molecules</span><span class="cr-arrow">›</span>
+          <span class="cr-step">Organisms</span><span class="cr-arrow">›</span>
+          <span class="cr-step">Templates</span><span class="cr-arrow">›</span>
+          <span class="cr-step">Pages</span>
+        </div>
+      </div>
+
+      <!-- ═══ 01 ATOMS ═══════════════════════════════════════════════════ -->
+      <div class="cr-sec" style="border-top:none">
+        <div class="cr-tier"><span class="cr-num">1</span><span class="cr-h">Atoms</span></div>
+        <div class="cr-def">The decisions, not the parts. Nothing below this divides any further.</div>
+
+        <div class="cr-lab">Colour · 8 tokens</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px">
+          <div><div class="cr-sw" style="background:#1B1714"></div><div class="cr-tok">Ink</div><div class="cr-hex">#1B1714</div></div>
+          <div><div class="cr-sw" style="background:#514A45"></div><div class="cr-tok">Ink soft</div><div class="cr-hex">#514A45</div></div>
+          <div><div class="cr-sw" style="background:#7C736D"></div><div class="cr-tok">Muted</div><div class="cr-hex">#7C736D</div></div>
+          <div><div class="cr-sw" style="background:#8A817B"></div><div class="cr-tok">Subtle</div><div class="cr-hex">#8A817B</div></div>
+          <div><div class="cr-sw" style="background:#BEC3C9"></div><div class="cr-tok">Hairline</div><div class="cr-hex">#BEC3C9</div></div>
+          <div><div class="cr-sw" style="background:#F0F2F5"></div><div class="cr-tok">Surface</div><div class="cr-hex">#F0F2F5</div></div>
+          <div><div class="cr-sw" style="background:#FFFFFF"></div><div class="cr-tok">Paper</div><div class="cr-hex">#FFFFFF</div></div>
+          <div><div class="cr-sw" style="background:#F2A93B"></div><div class="cr-tok">Amber</div><div class="cr-hex">#F2A93B</div></div>
+        </div>
+
+        <div class="cr-lab">Type · Poppins for display, SF Pro for text</div>
+        <div class="cr-card" style="margin-bottom:18px">
+          <div class="cr-type"><span class="text-display" style="color:#1B1714">Foodfeed</span><span class="cr-tok2">display · 34/41</span></div>
+          <div class="cr-type"><span class="text-heading-md" style="color:#1B1714">Zesty Shrimp</span><span class="cr-tok2">heading-md · 22/28</span></div>
+          <div class="cr-type"><span class="text-body" style="color:#1B1714">Garlicky and buttery</span><span class="cr-tok2">body · 17/22</span></div>
+          <div class="cr-type"><span class="text-detail" style="color:#514A45">35 min · 520 cal</span><span class="cr-tok2">detail · 15/20</span></div>
+          <div class="cr-type" style="border:none;padding-bottom:0"><span class="text-caption" style="color:#8A817B">Reviewed 9 days ago</span><span class="cr-tok2">caption · 12/16</span></div>
+        </div>
+
+        <div class="cr-lab">Radius · one corner shown</div>
+        <div class="cr-row" style="margin-bottom:18px">
+          <div><div class="cr-rad" style="border-radius:18px 0 0 0"></div><div class="cr-tok">18 · card</div></div>
+          <div><div class="cr-rad" style="border-radius:24px 0 0 0"></div><div class="cr-tok">24 · field</div></div>
+          <div><div class="cr-rad" style="border-radius:30px 0 0 0"></div><div class="cr-tok">30 · CTA</div></div>
+          <div><div class="cr-rad" style="border-radius:999px 0 0 0"></div><div class="cr-tok">999 · pill</div></div>
+        </div>
+
+        <div class="cr-lab">Elevation</div>
+        <div class="cr-row" style="margin-bottom:18px">
+          <div><div class="cr-rad" style="background:#fff;border-radius:12px;box-shadow:0 12px 28px -20px rgba(60,30,20,.5)"></div><div class="cr-tok">card lift</div></div>
+          <div><div class="cr-rad" style="background:#fff;border-radius:12px;box-shadow:0 2px 5px -2px rgba(27,23,20,.28)"></div><div class="cr-tok">tab lift</div></div>
+        </div>
+
+        <div class="cr-lab">Icon · 26px stroke 2.1–2.3, or solid at 47 viewBox</div>
+        <div class="cr-card cr-row" style="gap:16px;justify-content:space-between;margin-bottom:18px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="#1B1714"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"></path></svg>
+          <svg width="20" height="20" viewBox="0 0 47 47" fill="#1B1714"><path d="M9.4 9.4C9.4 6.8 11.5 4.7 14.1 4.7h18.8c2.6 0 4.7 2.1 4.7 4.7v30.6c0 1.9-2.1 3-3.7 2l-10.4-7-10.4 7c-1.6 1-3.7-.1-3.7-2V9.4z"></path></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8.4a6 6 0 0 0-12 0c0 6.6-2.6 8.4-2.6 8.4h17.2S18 15 18 8.4"></path><path d="M13.7 20.4a2 2 0 0 1-3.4 0"></path></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 20a7.5 7.5 0 0 1 15 0"></path></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg>
+        </div>
+
+        <div class="cr-lab">Motion · one curve, cubic-bezier(.22,.61,.36,1)</div>
+        <div class="cr-row">
+          <span class="cr-code">ffScreen 200ms</span><span class="cr-code">ffTurn 260ms</span><span class="cr-code">.ffrail 300ms</span>
+          <span class="cr-code">ffPop</span><span class="cr-code">ffFade</span><span class="cr-code">ffStagger</span><span class="cr-code">ffDot</span>
+        </div>
+      </div>
+
+      <!-- ═══ 02 MOLECULES ═══════════════════════════════════════════════ -->
+      <div class="cr-sec">
+        <div class="cr-tier"><span class="cr-num">2</span><span class="cr-h">Molecules</span></div>
+        <div class="cr-def">Atoms bonded into one job. Each has a single state machine and no layout opinion.</div>
+
+        <div class="cr-grid">
+          <div class="cr-card">
+            <div class="cr-stage">
+              <button style="padding:10px 16px;border-radius:999px;border:1.5px solid #BEC3C9;background:#fff;color:#514A45;font-size:13px;font-weight:700;letter-spacing:.1px">Vegan</button>
+              <button style="padding:10px 16px;border-radius:999px;border:1.5px solid #1B1714;background:#1B1714;color:#fff;font-size:13px;font-weight:700;letter-spacing:.1px">Keto</button>
+            </div>
+            <div class="cr-name">Chip</div><div class="cr-from">rest · selected — <code>chipStyle()</code></div>
+          </div>
+
+          <div class="cr-card">
+            <div class="cr-stage" style="background:#F0F2F5;border-radius:30px;padding:4px;gap:0">
+              <span style="flex:1;text-align:center;padding:10px 0;border-radius:30px;border:1px solid #BEC3C9;background:#fff;color:#1B1714;font-size:13px;font-weight:700;box-shadow:0 2px 5px -2px rgba(27,23,20,.28)">Ingredients</span>
+              <span style="flex:1;text-align:center;padding:10px 0;color:#8A817B;font-size:13px;font-weight:700">Steps</span>
+            </div>
+            <div class="cr-name">Segmented tabs</div><div class="cr-from">active · rest — <code>tabPill()</code></div>
+          </div>
+
+          <div class="cr-card" style="grid-column:1/-1">
+            <div class="cr-stage">
+              <div class="ffsearch" style="flex:1"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#8A817B" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg><span style="color:#8A817B;font-size:15px;padding:6px 0">Search recipes</span></div>
+            </div>
+            <div class="cr-name">Search field</div><div class="cr-from">one flat pill, no border, no lift — <code>.ffsearch</code></div>
+          </div>
+
+          <div class="cr-card">
+            <div class="cr-stage">
+              <span style="display:flex;align-items:center;gap:5px;font-size:11.5px;color:#514A45;font-weight:500"><svg width="12" height="12" viewBox="0 0 24 24" fill="#1B1714"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"></path></svg>4.8<span style="color:#D5CCC6">·</span>35 min</span>
+            </div>
+            <div class="cr-name">Meta row</div><div class="cr-from">star · rating · dot · time</div>
+          </div>
+
+          <div class="cr-card">
+            <div class="cr-stage" style="gap:12px">
+              <span style="width:31px;height:31px;border-radius:50%;background:rgba(0,0,0,.06);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 47 47" fill="#1B1714"><path d="M9.4 9.4C9.4 6.8 11.5 4.7 14.1 4.7h18.8c2.6 0 4.7 2.1 4.7 4.7v30.6c0 1.9-2.1 3-3.7 2l-10.4-7-10.4 7c-1.6 1-3.7-.1-3.7-2V9.4z"></path></svg></span>
+              <span style="width:32px;height:32px;border-radius:999px;border:1.5px dashed #BEC3C9;background:#fff;display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#8A817B" stroke-width="2.6" stroke-linecap="round"><path d="M12 5v14M5 12h14"></path></svg></span>
+              <span style="position:relative;width:28px;height:28px;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8.4a6 6 0 0 0-12 0c0 6.6-2.6 8.4-2.6 8.4h17.2S18 15 18 8.4"></path><path d="M13.7 20.4a2 2 0 0 1-3.4 0"></path></svg><span style="position:absolute;top:1px;right:1px;width:10px;height:10px;border-radius:50%;background:#1B1714;border:2px solid #fff"></span></span>
+            </div>
+            <div class="cr-name">Icon buttons</div><div class="cr-from">save · add feed · bell with unread</div>
+          </div>
+
+          <div class="cr-card" style="grid-column:1/-1">
+            <div class="cr-stage" style="flex-direction:column;align-items:stretch;gap:9px">
+              <span style="height:54px;border-radius:30px;background:#1B1714;color:#fff;font-size:17px;letter-spacing:.1px;display:flex;align-items:center;justify-content:center;gap:9px">Continue <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg></span>
+              <div style="display:flex;gap:9px">
+                <span style="flex:1;height:50px;border-radius:30px;border:1.5px solid #BEC3C9;background:#fff;color:#1B1714;font-size:15px;display:flex;align-items:center;justify-content:center">Secondary</span>
+                <span style="height:40px;padding:0 18px;border-radius:999px;background:#F0F2F5;color:#514A45;font-size:13px;font-weight:700;display:flex;align-items:center">Compact</span>
+              </div>
+            </div>
+            <div class="cr-name">Button</div><div class="cr-from">CTA 54 · standard 50 · compact 40 — Poppins 400</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══ 03 ORGANISMS ═══════════════════════════════════════════════ -->
+      <div class="cr-sec">
+        <div class="cr-tier"><span class="cr-num">3</span><span class="cr-h">Organisms</span></div>
+        <div class="cr-def">Molecules assembled into a section that can stand on its own page.</div>
+
+        <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:12px">
+          <div class="cr-card" style="width:168px;flex:none;padding:0;overflow:hidden;border-radius:18px;box-shadow:0 12px 28px -20px rgba(60,30,20,.5)">
+            <div style="position:relative;aspect-ratio:1/1;background:#F0F2F5;display:flex;align-items:center;justify-content:center">
+              <img src="images/Zesty Shrimp Scampi.png" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+              <span style="position:absolute;top:8px;right:8px;width:31px;height:31px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center"><svg width="15" height="15" viewBox="0 0 47 47" fill="#1B1714"><path d="M9.4 9.4C9.4 6.8 11.5 4.7 14.1 4.7h18.8c2.6 0 4.7 2.1 4.7 4.7v30.6c0 1.9-2.1 3-3.7 2l-10.4-7-10.4 7c-1.6 1-3.7-.1-3.7-2V9.4z"></path></svg></span>
+            </div>
+            <div style="padding:11px 12px 13px;background:#fff">
+              <div style="font:700 14px/1.25 'Poppins',sans-serif;letter-spacing:-.2px;color:#1B1714">Zesty Shrimp Linguine</div>
+              <div style="display:flex;align-items:center;gap:5px;margin-top:6px;font-size:11.5px;color:#514A45;font-weight:500"><svg width="12" height="12" viewBox="0 0 24 24" fill="#1B1714"><path d="M12 2 9 9l-7 .5 5.3 4.6L5.8 21 12 17l6.2 4-1.5-6.9L22 9.5 15 9z"></path></svg>4.8<span style="color:#D5CCC6">·</span>35 min</div>
+            </div>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div class="cr-name" style="margin-top:0">Recipe card</div>
+            <div class="cr-from" style="margin-bottom:12px">image-slot + save button + title + meta row. The unit the whole feed is made of.</div>
+            <div class="cr-card" style="padding:0;overflow:hidden">
+              <div style="height:40px;background:#FAF7F5;display:flex;align-items:flex-end;justify-content:space-between;padding:0 18px 7px">
+                <span style="font-size:13px;font-weight:700;letter-spacing:.2px;color:#1B1714">9:41</span>
+                <span style="display:flex;align-items:center;gap:5px;color:#1B1714"><svg width="15" height="10" viewBox="0 0 18 12" fill="currentColor"><rect x="0" y="7" width="3" height="5" rx="1"></rect><rect x="5" y="4.5" width="3" height="7.5" rx="1"></rect><rect x="10" y="2" width="3" height="10" rx="1"></rect><rect x="15" y="0" width="3" height="12" rx="1" opacity=".4"></rect></svg><svg width="21" height="10" viewBox="0 0 25 12" fill="none"><rect x="0.5" y="0.5" width="21" height="11" rx="3" stroke="currentColor" opacity=".4"></rect><rect x="2" y="2" width="17" height="8" rx="1.5" fill="currentColor"></rect><rect x="23" y="4" width="1.5" height="4" rx="1" fill="currentColor" opacity=".5"></rect></svg></span>
+              </div>
+            </div>
+            <div class="cr-name">Status bar</div><div class="cr-from">live device clock, colour inverts per screen</div>
+          </div>
+        </div>
+
+        <div class="cr-card" style="padding:0;overflow:hidden;margin-bottom:12px">
+          <div style="background:rgba(255,255,255,.92);padding:13px 6px 15px;display:flex;align-items:center">
+            <span style="flex:1;display:flex;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="#1B1714"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg></span>
+            <span style="flex:1;display:flex;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BEC3C9" stroke-width="2.3" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg></span>
+            <span style="flex:1;display:flex;justify-content:center"><svg width="24" height="24" viewBox="0 0 47 47" fill="none" stroke="#BEC3C9" stroke-width="3.5"><path d="M9.4 9.4C9.4 6.8 11.5 4.7 14.1 4.7h18.8c2.6 0 4.7 2.1 4.7 4.7v30.6c0 1.9-2.1 3-3.7 2l-10.4-7-10.4 7c-1.6 1-3.7-.1-3.7-2V9.4z"></path></svg></span>
+            <span style="flex:1;display:flex;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#BEC3C9" stroke-width="2.1" stroke-linecap="round"><circle cx="12" cy="8" r="4"></circle><path d="M4.5 20a7.5 7.5 0 0 1 15 0"></path></svg></span>
+          </div>
+        </div>
+        <div class="cr-name" style="margin-top:0">Bottom nav</div><div class="cr-from" style="margin-bottom:14px">4 destinations, current one solid — shown on 6 of 15 screens</div>
+
+        <div class="cr-card" style="padding:14px 16px 16px">
+          <div style="position:relative;display:flex;align-items:center;justify-content:center;min-height:30px;margin-bottom:12px">
+            <img src="images/Foodfeed_logo_red.svg" alt="Foodfeed" style="width:120px;height:21px;display:block;filter:brightness(0)">
+            <span style="position:absolute;right:0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8.4a6 6 0 0 0-12 0c0 6.6-2.6 8.4-2.6 8.4h17.2S18 15 18 8.4"></path><path d="M13.7 20.4a2 2 0 0 1-3.4 0"></path></svg></span>
+          </div>
+          <div style="display:flex;gap:7px;overflow:hidden">
+            <span style="padding:8px 14px;border-radius:999px;border:1.5px solid #1B1714;background:#1B1714;color:#fff;font-size:12px;font-weight:700;white-space:nowrap">🔥 Trending</span>
+            <span style="padding:8px 14px;border-radius:999px;border:1.5px solid #BEC3C9;background:#fff;color:#514A45;font-size:12px;font-weight:700;white-space:nowrap">For you</span>
+            <span style="padding:8px 14px;border-radius:999px;border:1.5px solid #BEC3C9;background:#fff;color:#514A45;font-size:12px;font-weight:700;white-space:nowrap">Dinner</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:7px;margin-top:10px">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#8A817B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+            <span style="flex:1;font-size:11.5px;color:#8A817B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Mediterranean · no peanuts · no cilantro</span>
+            <span style="font-size:11.5px;font-weight:600;color:#1B1714;text-decoration:underline;text-underline-offset:2px">Edit</span>
+          </div>
+        </div>
+        <div class="cr-name">Feed header</div><div class="cr-from">brand + bell · chip row · preference read-back</div>
+      </div>
+
+      <!-- ═══ 04 TEMPLATES ═══════════════════════════════════════════════ -->
+      <div class="cr-sec">
+        <div class="cr-tier"><span class="cr-num">4</span><span class="cr-h">Templates</span></div>
+        <div class="cr-def">Five skeletons carry all fifteen screens. Structure only — no copy, no photography.</div>
+
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px 14px">
+          <sc-for list="{{ compTemplates }}" as="t" hint-placeholder-count="5">
+            <div>
+              <div style="{{ t.frameStyle }}">
+                <sc-for list="{{ t.bars }}" as="b" hint-placeholder-count="10"><div style="{{ b.style }}"></div></sc-for>
+              </div>
+              <div class="cr-name">{{ t.name }}</div>
+              <div class="cr-from">{{ t.note }}</div>
+              <div class="cr-count">{{ t.usedBy }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+      <!-- ═══ 05 PAGES ═══════════════════════════════════════════════════ -->
+      <div class="cr-sec" style="padding-bottom:34px">
+        <div class="cr-tier"><span class="cr-num">5</span><span class="cr-h">Pages</span></div>
+        <div class="cr-def">Templates with the real thing in them. Click any tile to open that screen — the one you are on is highlighted.</div>
+
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:4px">
+          <sc-for list="{{ compPages }}" as="p" hint-placeholder-count="15">
+            <div onclick="{{ p.onGo }}" style="{{ p.tileStyle }}">
+              <div style="{{ p.frameStyle }}">
+                <sc-for list="{{ p.bars }}" as="b" hint-placeholder-count="10"><div style="{{ b.style }}"></div></sc-for>
+              </div>
+              <div style="{{ p.labelStyle }}">{{ p.label }}</div>
+              <div class="cr-from">{{ p.template }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+
+    </div>
+    </sc-if>
+
+<div class="ffpage" style="min-height:100vh;width:100%;display:flex;align-items:center;justify-content:center;background:#FFFFFF;font-family:-apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif;padding:40px 16px">
+
+  <!-- iPhone 16 Pro Max: 430 x 932pt screen inside a titanium body.
+       Body 452 x 954 = the screen plus 3px of metal and 8px of black bezel
+       on every side. The screen itself stays exactly 430 x 932 so every
+       layout in here keeps measuring against real device points. -->
+  <div style="position:relative;flex:none;width:452px;height:954px">
+    <!-- side buttons: only their outer edge clears the body -->
+      <div style="position:absolute;left:-3px;top:182px;width:4px;height:34px;border-radius:3px 0 0 3px;background:linear-gradient(148deg,#8D9096 0%,#54575C 9%,#3B3E43 20%,#9BA0A6 34%,#5E6166 47%,#35383C 61%,#7F838A 76%,#4A4D52 88%,#2C2E32 100%);z-index:0"></div>
+      <div style="position:absolute;left:-3px;top:238px;width:4px;height:64px;border-radius:3px 0 0 3px;background:linear-gradient(148deg,#8D9096 0%,#54575C 9%,#3B3E43 20%,#9BA0A6 34%,#5E6166 47%,#35383C 61%,#7F838A 76%,#4A4D52 88%,#2C2E32 100%);z-index:0"></div>
+      <div style="position:absolute;left:-3px;top:312px;width:4px;height:64px;border-radius:3px 0 0 3px;background:linear-gradient(148deg,#8D9096 0%,#54575C 9%,#3B3E43 20%,#9BA0A6 34%,#5E6166 47%,#35383C 61%,#7F838A 76%,#4A4D52 88%,#2C2E32 100%);z-index:0"></div>
+      <div style="position:absolute;right:-3px;top:262px;width:4px;height:104px;border-radius:0 3px 3px 0;background:linear-gradient(148deg,#8D9096 0%,#54575C 9%,#3B3E43 20%,#9BA0A6 34%,#5E6166 47%,#35383C 61%,#7F838A 76%,#4A4D52 88%,#2C2E32 100%);z-index:0"></div>
+    <!-- titanium band -->
+    <div style="position:absolute;inset:0;border-radius:68px;background:linear-gradient(148deg,#8D9096 0%,#54575C 9%,#3B3E43 20%,#9BA0A6 34%,#5E6166 47%,#35383C 61%,#7F838A 76%,#4A4D52 88%,#2C2E32 100%);z-index:1">
+      <!-- glass edge, then the black bezel the screen sits in -->
+      <div style="position:absolute;inset:3px;border-radius:65px;background:#0A0A0C"></div>
+      <div style="position:absolute;top:11px;left:11px;width:430px;height:932px;background:#FFFFFF;border-radius:57px;overflow:hidden">
 
       <!-- dynamic island -->
       <div style="position:absolute;top:11px;left:50%;transform:translateX(-50%);width:125px;height:37px;border-radius:19px;background:#0E0B0A;z-index:70;pointer-events:none"></div>
@@ -1195,9 +1482,8 @@
       </sc-if>
 
       <!-- PROFILE MENU RAIL -->
-      <sc-if value="{{ profileMenuOpen }}" hint-placeholder-val="{{ false }}">
-      <div onclick="{{ closeProfileMenu }}" style="position:absolute;inset:0;z-index:55;background:rgba(24,9,5,.38);animation:ffScrim .22s ease both"></div>
-      <div style="position:absolute;top:0;right:0;bottom:0;z-index:56;width:300px;background:#fff;box-shadow:-20px 0 48px -24px rgba(60,30,20,.6);display:flex;flex-direction:column;animation:ffRail .3s cubic-bezier(.22,.61,.36,1) both">
+      <div onclick="{{ closeProfileMenu }}" class="ffrailscrim" style="{{ railScrimStyle }}"></div>
+      <div class="ffrail" style="{{ railPanelStyle }}">
         <div style="display:flex;align-items:center;justify-content:space-between;padding:72px 20px 16px">
           <span style="font-family:'Poppins';font-weight:700;font-size:19px;color:#1B1714;letter-spacing:-.3px">Menu</span>
           <button onclick="{{ closeProfileMenu }}" aria-label="Close menu" style="width:32px;height:32px;border:none;background:transparent;padding:0;display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#7C736D" stroke-width="2.3" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"></path></svg></button>
@@ -1211,7 +1497,6 @@
           <div onclick="{{ menuLogout }}" style="display:flex;align-items:center;gap:13px;padding:16px 20px;cursor:pointer"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1B1714" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"></path></svg><span style="flex:1;font-size:15px;color:#1B1714;font-weight:500">Log out</span></div>
         </div>
       </div>
-      </sc-if>
 
       <!-- BOTTOM NAV -->
       <sc-if value="{{ showNav }}" hint-placeholder-val="{{ false }}">
@@ -1226,6 +1511,7 @@
       <!-- home indicator -->
       <div style="position:absolute;left:50%;transform:translateX(-50%);bottom:8px;width:134px;height:5px;border-radius:3px;background:{{ homeIndicator }};z-index:70;pointer-events:none"></div>
 
+      </div>
     </div>
   </div>
 </div>
@@ -1234,9 +1520,9 @@
 class Component extends DCLogic {
   state = {
     screen: 'splash',
-    // The status bar clock. Seeded on mount by startClock(); pinned to 8:23
-    // unless pinnedTime is cleared, in which case it tracks the viewer's device.
-    statusTime: '8:23',
+    // The status bar clock. Reads the viewer's device and is re-seeded on mount
+    // by startClock(); set pinnedTime to freeze it at a fixed time instead.
+    statusTime: '',
     avatar: null,
     form: { firstName: '', lastName: '', username: '', email: '', password: '', news: true, terms: false },
     // Returning users: the sign-in screen keeps its own credentials so a
@@ -1284,6 +1570,8 @@ class Component extends DCLogic {
     // Tabs the user has added from the "+" picker. Trending and For you are permanent.
     extraTabs: [],
     showTabPicker: false,
+    // The component repo in the dev rail. Closed until asked for.
+    showComponents: false,
     cuisinesOpen: false,
     detailTab: 'Ingredients',
     currentId: 'shrimp',
@@ -3398,9 +3686,9 @@ class Component extends DCLogic {
 
   /* ---- the phone's own clock -------------------------------------------- */
 
-  // Pinned so every screen and screenshot reads the same 8:23 PM. Set this to
-  // '' to hand the status bar back to the viewer's own device clock.
-  pinnedTime = '8:23';
+  // Empty so the status bar tracks the viewer's own device clock. Set this to a
+  // fixed time like '8:23' to freeze every screen and screenshot at that time.
+  pinnedTime = '';
 
   // The status bar reads the viewer's device rather than the 9:41 every mockup
   // ships with. Intl decides 12- or 24-hour from their locale, so a phone set
@@ -3527,9 +3815,21 @@ class Component extends DCLogic {
     this.setState({ feedTab: label });
   }
 
+  // Lets a capture script open one screen directly and drop the page chrome:
+  //   index.html#screen=profile&export=1
+  applyUrlOverrides() {
+    const raw = (location.hash || '').replace(/^#/, '');
+    if (!raw) return;
+    const q = new URLSearchParams(raw);
+    const scr = q.get('screen');
+    if (scr) this.setState({ screen: scr });
+    if (q.get('export')) document.body.classList.add('ffexport');
+  }
+
   componentDidMount() {
     this.syncFeedHeight();
     this.startClock();
+    this.applyUrlOverrides();
     if (this._swipeBound) return;
     this._swipeBound = true;
 
@@ -3603,6 +3903,86 @@ class Component extends DCLogic {
     clearTimeout(this._assistTimer);
     clearTimeout(this._clockTimer);
     this._clockTimer = null;
+  }
+
+  /* ---- component repo (dev rail) ---------------------------------------
+     The atomic-design map of this app. Templates are drawn as wireframes
+     rather than described, so a page tile can point at the skeleton it is
+     built on and the lineage is something you look at instead of read.
+
+     A bar is [top, left, width, height, radius?, fill?]. Top/left/width/
+     height are percentages of the frame, so the same spec draws a 110px
+     template plate and a 66px page thumbnail with no second set of numbers. */
+  wireframes = {
+    scroll: { name: 'Scroll feed', note: 'Sticky header · 2-up card grid · bottom nav', bars: [
+      [4,8,50,4], [4,80,12,4],
+      [11,8,22,4,999,'#1B1714'], [11,33,17,4,999], [11,53,17,4,999], [11,73,10,4,999],
+      [19,8,40,20,3,'#E4DDD7'], [19,52,40,20,3,'#E4DDD7'],
+      [42,8,40,20,3,'#E4DDD7'], [42,52,40,20,3,'#E4DDD7'],
+      [65,8,40,20,3,'#E4DDD7'], [65,52,40,20,3,'#E4DDD7'],
+      [91,8,84,5,3,'#EDE7E2'],
+    ]},
+    hero: { name: 'Hero detail', note: 'Full-bleed media · sheet over it · pinned CTA', bars: [
+      [0,0,100,42,0,'#D4CBC4'],
+      [38,0,100,62,9,'#FFFFFF'],
+      [45,8,58,5], [53,8,38,3,2,'#E4DDD7'],
+      [60,8,84,6,999,'#EFE9E4'],
+      [70,8,84,2.5,2,'#E4DDD7'], [75,8,68,2.5,2,'#E4DDD7'], [80,8,77,2.5,2,'#E4DDD7'],
+      [88,8,84,7,999,'#1B1714'],
+    ]},
+    survey: { name: 'Survey step', note: 'Back · question · chip cloud · pinned CTA', bars: [
+      [4,8,8,4],
+      [12,8,62,6], [21,8,78,3,2,'#E4DDD7'],
+      [30,8,26,5,999], [30,37,32,5,999], [30,72,20,5,999],
+      [39,8,34,5,999], [39,45,22,5,999], [39,70,22,5,999],
+      [48,8,20,5,999], [48,31,30,5,999], [48,64,28,5,999],
+      [57,8,28,5,999], [57,39,24,5,999],
+      [88,8,84,7,999,'#1B1714'],
+    ]},
+    auth: { name: 'Auth sheet', note: 'Looping media · sheet on the bottom edge', bars: [
+      [0,0,100,58,0,'#C6BCB4'],
+      [52,0,100,48,10,'#FFFFFF'],
+      [60,8,44,5],
+      [69,8,84,6,999,'#EFE9E4'], [77,8,84,6,999,'#EFE9E4'],
+      [86,8,84,7,999,'#1B1714'],
+      [95,28,44,3,2,'#E4DDD7'],
+    ]},
+    list: { name: 'Stacked list', note: 'Title · avatar rows · bottom nav', bars: [
+      [4,8,44,6],
+      [15,8,13,8,999,'#E4DDD7'], [16,26,54,3.5], [22,26,36,2.5,2,'#E4DDD7'],
+      [30,8,13,8,999,'#E4DDD7'], [31,26,46,3.5], [37,26,42,2.5,2,'#E4DDD7'],
+      [45,8,13,8,999,'#E4DDD7'], [46,26,58,3.5], [52,26,32,2.5,2,'#E4DDD7'],
+      [60,8,13,8,999,'#E4DDD7'], [61,26,40,3.5], [67,26,44,2.5,2,'#E4DDD7'],
+      [91,8,84,5,3,'#EDE7E2'],
+    ]},
+  };
+
+  // Which skeleton each screen is cut from. Order follows the app's own walk.
+  pageMap = [
+    ['Splash / Sign In','splash','auth'], ['Sign Up','signup','auth'], ['Sign In','signin','auth'],
+    ['Preferences Intro','intro','survey'], ['Diet','diet','survey'],
+    ['Eating goals','dislikes','survey'], ['Allergies','allergies','survey'],
+    ['Home','home','scroll'], ['Discover','discover','scroll'], ['Saved','bookmarks','scroll'],
+    ['Recipe Detail','detail','hero'], ['Cooking','cooking','hero'],
+    ['Assist','assist','list'], ['Profile','profile','list'], ['Notifications','notifications','list'],
+  ];
+
+  wire(bars) {
+    return bars.map(b => ({ style: {
+      position:'absolute', top:b[0]+'%', left:b[1]+'%', width:b[2]+'%', height:b[3]+'%',
+      borderRadius:(b[4] === undefined ? 2 : b[4]) + 'px',
+      background: b[5] || '#CFC7C0',
+    }}));
+  }
+
+  // The plate a wireframe is drawn on. Templates get the big one, pages the
+  // thumbnail; both are the same 9:19.5 phone so they read as the same object.
+  wireFrame(w) {
+    return {
+      position:'relative', width:w+'px', height:Math.round(w*1.94)+'px', flex:'none',
+      background:'#FAF8F7', border:'1px solid #E0D9D3', borderRadius:(w > 80 ? 10 : 7)+'px',
+      overflow:'hidden',
+    };
   }
 
   chipStyle(selected) {
@@ -3818,6 +4198,48 @@ class Component extends DCLogic {
         }),
       })),
 
+      // ---- component repo ------------------------------------------------
+      showComponents: s.showComponents,
+      toggleComponents: () => this.setState({ showComponents: !s.showComponents }),
+      closeComponents: () => this.setState({ showComponents: false }),
+      compToggleStyle: {
+        width:'100%', textAlign:'left', borderRadius:'7px', padding:'6px 9px',
+        fontFamily:"-apple-system, 'SF Pro Text', 'SF Pro Display', BlinkMacSystemFont, system-ui, sans-serif",
+        fontSize:'12px', fontWeight:600, cursor:'pointer', whiteSpace:'nowrap',
+        background: s.showComponents ? '#FFFFFF' : '#3A3532',
+        color: s.showComponents ? '#14100D' : '#FFFFFF',
+        border: '1px solid ' + (s.showComponents ? '#FFFFFF' : '#57504A'),
+        boxShadow: s.showComponents ? '0 2px 6px rgba(0,0,0,.5)' : '0 1px 2px rgba(0,0,0,.25)',
+      },
+      compTemplates: Object.keys(this.wireframes).map(k => {
+        const t = this.wireframes[k];
+        // How many screens are cut from this one skeleton — the number that
+        // makes a template worth having.
+        const used = this.pageMap.filter(p => p[2] === k);
+        return {
+          name: t.name, note: t.note,
+          usedBy: used.length + (used.length === 1 ? ' page' : ' pages'),
+          frameStyle: this.wireFrame(104),
+          bars: this.wire(t.bars),
+        };
+      }),
+      compPages: this.pageMap.map(([label, target, tpl]) => ({
+        label, template: this.wireframes[tpl].name,
+        onGo: target === 'detail' ? () => this.openRecipe('shrimp') : () => this.go(target),
+        frameStyle: this.wireFrame(62),
+        bars: this.wire(this.wireframes[tpl].bars),
+        labelStyle: {
+          font:"600 11px/14px -apple-system, 'SF Pro Text', system-ui, sans-serif",
+          color: scr === target ? '#1B1714' : '#4A433E', marginTop:'7px',
+        },
+        tileStyle: {
+          cursor:'pointer', padding:'9px 9px 10px', borderRadius:'11px',
+          background: scr === target ? '#FFFFFF' : 'transparent',
+          border: '1px solid ' + (scr === target ? '#D9D1CB' : 'transparent'),
+          boxShadow: scr === target ? '0 4px 14px -8px rgba(60,30,20,.5)' : 'none',
+        },
+      })),
+
       // nav
       goSplash: () => this.go('splash'),
       goSignin: () => this.go('signin'),
@@ -3835,6 +4257,15 @@ class Component extends DCLogic {
 
       // profile
       profileMenuOpen: !!s.profileMenuOpen,
+      railScrimStyle: { position:'absolute', inset:0, zIndex:55, background:'rgba(24,9,5,.38)',
+        opacity: s.profileMenuOpen ? 1 : 0,
+        // nothing to click through to once it has faded out
+        pointerEvents: s.profileMenuOpen ? 'auto' : 'none' },
+      railPanelStyle: { position:'absolute', top:0, right:0, bottom:0, zIndex:56, width:'300px',
+        background:'#fff', boxShadow:'-20px 0 48px -24px rgba(60,30,20,.6)', display:'flex',
+        flexDirection:'column',
+        // parked just past the right edge; the frame clips it, so it cannot be reached
+        transform: s.profileMenuOpen ? 'none' : 'translateX(100%)' },
       toggleProfileMenu: () => this.setState({ profileMenuOpen: !s.profileMenuOpen }),
       closeProfileMenu: () => this.setState({ profileMenuOpen: false }),
       menuDiet: () => this.profileMenuGo('diet'),
